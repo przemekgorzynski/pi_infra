@@ -1,0 +1,38 @@
+version: '3'
+
+ 
+services:
+  db:
+    image: postgres:13.1
+    container_name: nextcloud_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=*******FILL*********
+      - POSTGRES_DB=nextcloud
+      - APP_DB_USER=przemek
+      - APP_DB_PASS=*******FILL*********
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - /nextcloud/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  app:
+    image: nextcloud
+    container_name: nextcloud_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:80
+    links:
+      - db
+    volumes:
+      - /nextcloud/data:/var/www/html
+      - /nextcloud/config:/var/www/html/config
+      - /nextcloud/apps:/var/www/html/custom_apps
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=przemek
+      - POSTGRES_HOST=nextcloud_postgres:5432

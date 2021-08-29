@@ -1,0 +1,38 @@
+---
+- name: Update system
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+  tags:
+    - update_system
+
+- name: Install OS packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  tags:
+    - install_packages
+  
+- name: Set hostname
+  hostname:
+    name: "{{ ansible_hostname }}"
+
+- name: Update /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      {% for host in groups['all'] %}
+      {{ hostvars[host].ansible_host }} {{ host }} {{ domain }}
+      {% endfor %}
+
+- name: Disable password login
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication yes'
+    replace: 'PasswordAuthentication no'
+  notify:
+    - ssh_restart
+  tags:
+    - ssh_configure

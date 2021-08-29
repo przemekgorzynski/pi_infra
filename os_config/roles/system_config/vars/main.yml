@@ -1,0 +1,6 @@
+packages:
+- curl
+- network-manager
+- git
+- net-tools
+- vim

@@ -18,7 +18,7 @@
   tags:
     - user_config
 
-- name: Update przemek user authorized keys
+- name: Update authorized keys
   authorized_key:
     user: "{{ item }}"
     state: present

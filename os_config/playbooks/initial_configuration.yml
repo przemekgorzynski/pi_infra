@@ -2,6 +2,7 @@
 - name: Initiall configuration
   hosts: all
   gather_facts: yes
+  user: pi
   become: yes
   
   vars_files:

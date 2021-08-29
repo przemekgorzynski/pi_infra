@@ -1,19 +1,19 @@
 ---
-# name: Update system
-# apt:
-#   name: "*"
-#   state: latest
-#   update_cache: yes
-#   autoremove: yes
-# tags:
-#   - update_system
-#
-#- name: Install OS packages
-#  apt:
-#    name: "{{ packages }}"
-#    state: present
-#  tags:
-#    - install_packages
+- name: Update system
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+  tags:
+   - update_system
+
+- name: Install OS packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  tags:
+    - install_packages
 
 - name: Set hostname
   hostname:
@@ -41,15 +41,3 @@
     - ssh_restart
   tags:
     - ssh_configure
-
-#- name: Install OS packages on nextcloud host
-#  apt:
-#    name: "{{ nextcloud_packages }}"
-#    state: present
-#  when: inventory_hostname == "nextcloud"
-
-- name: Git checkout
-  ansible.builtin.git:
-    repo: 'https://github.com/przemekgorzynski/pi_infra.git'
-    dest: /pi_infra
-  when: inventory_hostname == "nextcloud"

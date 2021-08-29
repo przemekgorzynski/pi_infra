@@ -1,0 +1,24 @@
+- name: Install OS packages on nextcloud host
+  apt:
+    name: "{{ nextcloud_packages }}"
+    state: present
+  when: inventory_hostname == "nextcloud"
+
+- name: Enable Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create Netcloud directories
+  file:
+    path: /nextcloud
+    state: directory
+
+- name: Mount Nextcloud storage
+  mount:
+    path: /nextcloud
+    src: "{{ partition_uuid }}"
+    fstype: ext4
+    opts: noatime
+    state: mounted

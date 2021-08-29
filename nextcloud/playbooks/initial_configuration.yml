@@ -1,0 +1,18 @@
+---
+- name: Nextcloud configure
+  hosts: nextcloud
+  gather_facts: yes
+  become: yes
+  user: przemek
+  
+  vars_files:
+  -  ../../vault.yml
+  
+  pre_tasks:
+  - name: check connectivity
+    ping:
+
+  tasks:
+  - import_role:
+      name: pre_config
+      tasks_from: main.yml

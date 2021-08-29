@@ -2,5 +2,8 @@ packages:
 - curl
 - network-manager
 - git
+- docker
+- docker.io
+- docker-compose
 - net-tools
 - vim

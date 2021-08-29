@@ -14,10 +14,10 @@
 
   tasks:
   - import_role:
-      name: system_config
+      name: create_user
       tasks_from: main.yml
   - import_role:
-      name: create_user
+      name: system_config
       tasks_from: main.yml
   - import_role:
       name: reboot

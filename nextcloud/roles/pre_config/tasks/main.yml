@@ -3,17 +3,23 @@
     name: "{{ nextcloud_packages }}"
     state: present
   when: inventory_hostname == "nextcloud"
+  tags:
+    - pre-config
 
 - name: Enable Docker service
   service:
     name: docker
     state: started
     enabled: yes
+  tags:
+    - pre_config
 
 - name: Create Netcloud directories
   file:
     path: /nextcloud
     state: directory
+  tags:
+    - pre_config
 
 - name: Mount Nextcloud storage
   mount:
@@ -22,3 +28,5 @@
     fstype: ext4
     opts: noatime
     state: mounted
+  tags:
+    - pre_config

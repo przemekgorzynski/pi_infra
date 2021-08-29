@@ -3,6 +3,8 @@
   group:
     name: admins
     state: present
+  tags:
+    - user_config
 
 - name: Create users
   ansible.builtin.user:
@@ -13,17 +15,24 @@
     create_home: yes
   loop:
     - { name: 'przemek', groups: 'sudo,admins', shell: '/bin/bash' }
+  tags:
+    - user_config
 
-- name: Update authorized keys
+- name: Update przemek user authorized keys
   authorized_key:
-    user: przemek
+    user: "{{ item }}"
     state: present
-    key: "{{ item }}"
-  with_file:
-    - ./files/id_rsa_przemek.pub
+    key: "{{ lookup('file', '../files/id_rsa_przemek.pub') }}"
+  with_items:
+    - przemek
+    - pi
+  tags:
+    - user_config
 
 - name: Allow sudo for admins group
   copy:
     content: "%admins ALL=(ALL) NOPASSWD:ALL"
     dest: /etc/sudoers.d/admins
     mode: 0600
+  tags:
+    - user_config

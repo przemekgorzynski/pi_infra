@@ -1,4 +1,6 @@
 ---
 - name: reboot machine
   reboot: 
-    reboot_timeout: 3600
+    reboot_timeout: 180
+  tags:
+    - reboot

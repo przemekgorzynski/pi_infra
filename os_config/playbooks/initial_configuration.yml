@@ -3,7 +3,10 @@
   hosts: all
   gather_facts: yes
   become: yes
-
+  
+  vars_files:
+  -  ../../vault.yml
+  
   pre_tasks:
   - name: check connectivity
     ping:

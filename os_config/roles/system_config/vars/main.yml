@@ -4,3 +4,7 @@ packages:
 - git
 - net-tools
 - vim
+
+nextcloud_packages:
+- docker-compose
+- docker

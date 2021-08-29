@@ -1,31 +1,36 @@
 ---
-- name: Update system
-  apt:
-    name: "*"
-    state: latest
-    update_cache: yes
-    autoremove: yes
-  tags:
-    - update_system
+# name: Update system
+# apt:
+#   name: "*"
+#   state: latest
+#   update_cache: yes
+#   autoremove: yes
+# tags:
+#   - update_system
+#
+#- name: Install OS packages
+#  apt:
+#    name: "{{ packages }}"
+#    state: present
+#  tags:
+#    - install_packages
 
-- name: Install OS packages
-  apt:
-    name: "{{ packages }}"
-    state: present
-  tags:
-    - install_packages
-  
 - name: Set hostname
   hostname:
-    name: "{{ ansible_hostname }}"
+    name: "{{ inventory_hostname }}"
 
 - name: Update /etc/hosts
   blockinfile:
     path: /etc/hosts
     block: |
       {% for host in groups['all'] %}
-      {{ hostvars[host].ansible_host }} {{ host }} {{ domain }}
+      {{ hostvars[host].ansible_host }} {{ host }}
       {% endfor %}
+
+- name: change user pi password
+  user:
+    name: pi
+    password: "{{ pi_pass }}"
 
 - name: Disable password login
   replace:
@@ -36,3 +41,15 @@
     - ssh_restart
   tags:
     - ssh_configure
+
+#- name: Install OS packages on nextcloud host
+#  apt:
+#    name: "{{ nextcloud_packages }}"
+#    state: present
+#  when: inventory_hostname == "nextcloud"
+
+- name: Git checkout
+  ansible.builtin.git:
+    repo: 'https://github.com/przemekgorzynski/pi_infra.git'
+    dest: /pi_infra
+  when: inventory_hostname == "nextcloud"

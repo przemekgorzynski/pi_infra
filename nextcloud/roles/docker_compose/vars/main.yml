@@ -1,0 +1,6 @@
+nextcloud_packages:
+- docker-compose
+- docker
+
+
+partition_uuid: UUID=52f1031b-dca3-4592-9719-9eba99bbd0bf

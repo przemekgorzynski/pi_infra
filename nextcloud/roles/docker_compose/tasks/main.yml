@@ -1,32 +1,5 @@
-- name: Install OS packages on nextcloud host
-  apt:
-    name: "{{ nextcloud_packages }}"
-    state: present
-  when: inventory_hostname == "nextcloud"
-  tags:
-    - pre-config
-
-- name: Enable Docker service
-  service:
-    name: docker
-    state: started
-    enabled: yes
-  tags:
-    - pre_config
-
-- name: Create Netcloud directories
-  file:
-    path: /nextcloud
-    state: directory
-  tags:
-    - pre_config
-
-- name: Mount Nextcloud storage
-  mount:
-    path: /nextcloud
-    src: "{{ partition_uuid }}"
-    fstype: ext4
-    opts: noatime
-    state: mounted
-  tags:
-    - pre_config
+- name: Copy compose file from template
+  template:
+    src: ../templates/compose.j2
+    dest: /compose/docker-compose.yml
+    force: yes

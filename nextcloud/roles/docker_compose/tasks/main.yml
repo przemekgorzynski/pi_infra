@@ -12,7 +12,14 @@
     force: yes
 
 - name: Deploy Docker Compose stack
-  docker_compose:
-    project_src: /compose
-    files:
-    - docker-compose.yml
+  shell: cd /compose && docker-compose up -d
+
+- name: Check compose stack is deployed
+  shell: docker ps -a
+  register: docker_status
+
+- name: Docker status
+  debug:
+    msg:  "{{ docker_status.stdout_lines }}"
+  tags:
+    - general_config_ubunt

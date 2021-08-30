@@ -8,10 +8,10 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD="{{ postgres_root_pass }}"
+      - POSTGRES_PASSWORD={{ postgres_root_pass }}
       - POSTGRES_DB=nextcloud
       - APP_DB_USER=przemek
-      - APP_DB_PASS="{{ postgres_przemek_pass }}"
+      - APP_DB_PASS={{ postgres_przemek_pass }}
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
       - /nextcloud/postgres:/var/lib/postgresql/data

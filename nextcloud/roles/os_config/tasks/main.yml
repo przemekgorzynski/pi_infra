@@ -1,10 +1,11 @@
+---
 - name: Install OS packages on nextcloud host
   apt:
     name: "{{ nextcloud_packages }}"
     state: present
   when: inventory_hostname == "nextcloud"
   tags:
-    - pre-config
+  - pre-config
 
 - name: Enable Docker service
   service:
@@ -12,14 +13,18 @@
     state: started
     enabled: yes
   tags:
-    - pre_config
+  - pre_config
 
 - name: Create Netcloud directories
   file:
-    path: /nextcloud
+    path: "{{ item }}"
     state: directory
+  with_items:
+  - /nextcloud
+  - /compose
+  - /compose/db
   tags:
-    - pre_config
+  - pre_config
 
 - name: Mount Nextcloud storage
   mount:
@@ -29,4 +34,4 @@
     opts: noatime
     state: mounted
   tags:
-    - pre_config
+  - pre_config

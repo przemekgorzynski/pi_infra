@@ -3,3 +3,16 @@
     src: ../templates/compose.j2
     dest: /compose/docker-compose.yml
     force: yes
+
+- name: Copy DB config
+  copy:
+    src: ../../db/01-init.sh
+    dest: /compose/db/01-init.sh
+    mode: '0664'
+    force: yes
+
+- name: Deploy Docker Compose stack
+  docker_compose:
+    project_src: /compose
+    files:
+    - docker-compose.yml

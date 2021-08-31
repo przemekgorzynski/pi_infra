@@ -5,4 +5,4 @@ nextcloud_packages:
 - python-docker
 
 
-partition_uuid: UUID=52f1031b-dca3-4592-9719-9eba99bbd0bf
+partition_uuid: UUID=790d7f4b-54e1-436d-95de-a32ed8b6c19a

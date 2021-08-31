@@ -14,10 +14,10 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx:/etc/nginx/conf.d:rw
-      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
-      - ./proxy/html:/usr/share/nginx/html:rw
-      - ./proxy/certs:/etc/nginx/certs:ro
+      - /nextcloud/nginx:/etc/nginx/conf.d:rw
+      - /nextcloud/proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - /nextcloud/proxy/html:/usr/share/nginx/html:rw
+      - /nextcloud/proxy/certs:/etc/nginx/certs:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: unless-stopped
@@ -33,9 +33,9 @@ services:
     environment:
       - NGINX_PROXY_CONTAINER=nginx
     volumes:
-      - ./proxy/certs:/etc/nginx/certs:rw
-      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
-      - ./proxy/html:/usr/share/nginx/html:rw
+      - /nextcloud/proxy/certs:/etc/nginx/certs:rw
+      - /nextcloud/proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - /nextcloud/proxy/html:/usr/share/nginx/html:rw
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
@@ -46,10 +46,10 @@ services:
     restart: always
     environment:
       - POSTGRES_USER={{ postgres_root_user }}
-      - POSTGRES_PASSWORD={{ postgres_root_pass }}          #comes from vault
+      - POSTGRES_PASSWORD={{ postgres_root_pass }}
       - POSTGRES_DB={{ postgres_db }}
       - APP_DB_USER={{ postgres_app_user }}
-      - APP_DB_PASS={{ postgres_user_pass }}                #comes from vault
+      - APP_DB_PASS={{ postgres_user_pass }}
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
       - /nextcloud/postgres:/var/lib/postgresql/data
@@ -75,7 +75,6 @@ services:
       - /nextcloud/data:/var/www/html
       - /nextcloud/config:/var/www/html/config
       - /nextcloud/apps:/var/www/html/custom_apps
-      - ./php/config.php:/var/www/html/config/config.php
     environment:
       - POSTGRES_DB={{ postgres_db }}
       - POSTGRES_USER={{ postgres_app_user }}

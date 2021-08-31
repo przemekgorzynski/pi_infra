@@ -11,30 +11,15 @@
     mode: '0664'
     force: yes
 
-- name: Copy Nginx config
-  copy:
-    src: ../../nginx
-    dest: /compose
-    mode: '0664'
-    force: yes
+- name: Deploy Docker Compose stack
+  shell: cd /compose && docker-compose up -d
 
-- name: Copy PHP config
-  copy:
-    src: ../../php
-    dest: /compose
-    owner: www-data 
-    mode: '0644'
-    force: yes
+- name: Check compose stack is deployed
+  shell: docker ps -a
+  register: docker_status
 
-#- name: Deploy Docker Compose stack
-#  shell: cd /compose && docker-compose up -d
-#
-#- name: Check compose stack is deployed
-#  shell: docker ps -a
-#  register: docker_status
-#
-#- name: Docker status
-#  debug:
-#    msg:  "{{ docker_status.stdout_lines }}"
-#  tags:
-#    - general_config_ubunt
+- name: Docker status
+  debug:
+    msg:  "{{ docker_status.stdout_lines }}"
+  tags:
+    - general_config_ubunt

@@ -5,7 +5,7 @@
     state: present
   when: inventory_hostname == "nextcloud"
   tags:
-  - pre-config
+  - pre_config
 
 - name: Enable Docker service
   service:

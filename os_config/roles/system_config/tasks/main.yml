@@ -35,6 +35,7 @@
   user:
     name: pi
     password: "{{ pi_pass }}"
+  no_log: True
   tags:
    - os_config
 

@@ -23,6 +23,8 @@
   - /nextcloud
   - /compose
   - /compose/db
+  - /compose/nginx
+  - /compose/php
   tags:
   - pre_config
 

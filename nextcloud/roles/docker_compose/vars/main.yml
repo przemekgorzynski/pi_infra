@@ -4,3 +4,9 @@ nextcloud_packages:
 
 
 partition_uuid: UUID=52f1031b-dca3-4592-9719-9eba99bbd0bf
+domain: przemekgorzynski.pl
+email: przemyslaw.gorzynski@protonmail.com
+postgres_db: nextcloud
+postgres_root_user: root
+postgres_app_user: przemek
+postgres_host: nextcloud_postgres:5432

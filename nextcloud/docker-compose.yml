@@ -1,22 +1,63 @@
 version: '3'
 
- 
 services:
+
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+    networks:
+      nextcloud:
+        ipv4_address: 10.5.0.2
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:rw
+      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - ./proxy/html:/usr/share/nginx/html:rw
+      - ./proxy/certs:/etc/nginx/certs:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: unless-stopped
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    depends_on:
+      - proxy
+    networks:
+      nextcloud:
+        ipv4_address: 10.5.0.3
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx
+    volumes:
+      - ./proxy/certs:/etc/nginx/certs:rw
+      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - ./proxy/html:/usr/share/nginx/html:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
   db:
     image: postgres:13.1
     container_name: nextcloud_postgres
     restart: always
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=*******FILL*********
+      - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=nextcloud
       - APP_DB_USER=przemek
-      - APP_DB_PASS=*******FILL*********
+      - APP_DB_PASS=admin
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
       - /nextcloud/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      nextcloud:
+        ipv4_address: 10.5.0.4
 
   app:
     image: nextcloud
@@ -24,6 +65,8 @@ services:
     restart: always
     depends_on:
       - db
+      - proxy
+      - letsencrypt
     ports:
       - 8080:80
     links:
@@ -36,3 +79,16 @@ services:
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=przemek
       - POSTGRES_HOST=nextcloud_postgres:5432
+      - VIRTUAL_HOST=przemekgorzynski.pl
+      - LETSENCRYPT_HOST=przemekgorzynski.pl
+      - LETSENCRYPT_EMAIL=przemyslaw.gorzynski@protonmail.com
+    networks:
+      nextcloud:
+        ipv4_address: 10.5.0.5
+
+networks:
+  nextcloud:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16

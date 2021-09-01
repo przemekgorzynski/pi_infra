@@ -3,6 +3,11 @@ nextcloud_packages:
 - docker
 - python-pip
 - python-docker
+- nginx
+- certbot
+- python-certbot-nginx
 
 
 partition_uuid: UUID=790d7f4b-54e1-436d-95de-a32ed8b6c19a
+domain: przemekgorzynski.pl
+fqdn: www.przemekgorzynski.pl

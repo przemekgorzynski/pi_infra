@@ -37,3 +37,50 @@
     state: mounted
   tags:
   - pre_config
+
+- name: Enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  tags:
+  - pre_config
+
+- name: Copy Nginx default config
+  template:
+    src: ../templates/przemekgorzynski.j2
+    dest: /etc/nginx/conf.d/przemekgorzynski.pl
+    force: yes
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  tags:
+  - pre_config
+
+- name: Run certbot commands
+  shell: certbot --nginx -d przemekgorzynski.pl -d www.przemekgorzynski.pl
+
+- name: Copy Nginx SSL config
+  template:
+    src: ../templates/default.j2
+    dest: /etc/nginx/sites-enabled/default
+    force: yes
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  tags:
+  - pre_config
+
+- name: Set cron to renew SSL certifaces
+  cron:
+    name: renew SSL
+    job: /usr/bin/certbot renew --quiet
+    weekday: "5"
+    hour: "16"
+    minute: "30"
+    user: root
+    

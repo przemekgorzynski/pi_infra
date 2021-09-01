@@ -2,44 +2,6 @@ version: '3'
 
 services:
 
-  proxy:
-    image: jwilder/nginx-proxy:alpine
-    container_name: nginx
-    labels:
-      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
-    networks:
-      nextcloud:
-        ipv4_address: 10.5.0.2
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /nextcloud/nginx:/etc/nginx/conf.d:rw
-      - /nextcloud/proxy/vhost.d:/etc/nginx/vhost.d:rw
-      - /nextcloud/proxy/html:/usr/share/nginx/html:rw
-      - /nextcloud/proxy/certs:/etc/nginx/certs:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    restart: unless-stopped
-
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt
-    depends_on:
-      - proxy
-    networks:
-      nextcloud:
-        ipv4_address: 10.5.0.3
-    environment:
-      - NGINX_PROXY_CONTAINER=nginx
-    volumes:
-      - /nextcloud/proxy/certs:/etc/nginx/certs:rw
-      - /nextcloud/proxy/vhost.d:/etc/nginx/vhost.d:rw
-      - /nextcloud/proxy/html:/usr/share/nginx/html:rw
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: unless-stopped
-
   db:
     image: postgres:13.1
     container_name: nextcloud_postgres
@@ -65,8 +27,6 @@ services:
     restart: always
     depends_on:
       - db
-      - proxy
-      - letsencrypt
     ports:
       - 8080:80
     links:
@@ -79,9 +39,6 @@ services:
       - POSTGRES_DB={{ postgres_db }}
       - POSTGRES_USER={{ postgres_app_user }}
       - POSTGRES_HOST={{ postgres_host }}
-      - VIRTUAL_HOST={{ domain }}
-      - LETSENCRYPT_HOST={{ domain }}
-      - LETSENCRYPT_EMAIL={{ email }}
     networks:
       nextcloud:
         ipv4_address: 10.5.0.5

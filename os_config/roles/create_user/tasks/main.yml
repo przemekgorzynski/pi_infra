@@ -9,12 +9,14 @@
 - name: Create users
   ansible.builtin.user:
     name: "{{ item.name }}"
+    password: "{{ item.password }}"
     state: present
     shell:  "{{ item.shell }}"
     groups: "{{ item.groups }}"
     create_home: yes
+  no_log: True
   loop:
-    - { name: 'przemek', groups: 'sudo,admins', shell: '/bin/bash' }
+    - { name: 'przemek', password: "{{ przemek_pass }}", groups: 'sudo,admins', shell: '/bin/bash' }
   tags:
     - user_config
 

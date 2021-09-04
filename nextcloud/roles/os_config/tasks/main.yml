@@ -1,5 +1,5 @@
 ---
-- name: Install OS packages on nextcloud host
+- name: Install OS packages
   apt:
     name: "{{ nextcloud_packages }}"
     state: present
@@ -7,11 +7,11 @@
   tags:
   - pre_config
 
-- name: Enable Docker service
-  service:
-    name: docker
-    state: started
-    enabled: yes
+- name: Install pip packages
+  pip:
+    name: "{{ pip_packages }}"
+    state: present
+  when: inventory_hostname == "nextcloud"
   tags:
   - pre_config
 
@@ -38,49 +38,35 @@
   tags:
   - pre_config
 
-- name: Enable nginx
+- name: Enable services
   service:
-    name: nginx
+    name: "{{ item }}"
     state: started
     enabled: yes
+  with_items:
+    - docker
+    - nginx
   tags:
   - pre_config
 
-- name: Copy Nginx default config
-  template:
-    src: ../templates/przemekgorzynski.j2
-    dest: /etc/nginx/conf.d/przemekgorzynski.pl
-    force: yes
-
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-  tags:
-  - pre_config
-
-- name: Run certbot commands
-  shell: certbot --nginx -d przemekgorzynski.pl -d www.przemekgorzynski.pl
-
-- name: Copy Nginx SSL config
-  template:
-    src: ../templates/default.j2
-    dest: /etc/nginx/sites-enabled/default
-    force: yes
-
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-  tags:
-  - pre_config
-
-- name: Set cron to renew SSL certifaces
-  cron:
-    name: renew SSL
-    job: /usr/bin/certbot renew --quiet
-    weekday: "5"
-    hour: "16"
-    minute: "30"
-    user: root
-    
+#- name: Copy Nginx default config
+#  template:
+#    src: ../templates/przemekgorzynski.j2
+#    dest: /etc/nginx/conf.d/przemekgorzynski.pl
+#    force: yes
+#
+#- name: Restart nginx
+#  service:
+#    name: nginx
+#    state: restarted
+#  tags:
+#  - pre_config
+#
+#- name: Run certbot commands
+#  expect:
+#    command: certbot --nginx -d przemekgorzynski.pl -d www.przemekgorzynski.pl
+#    responses:
+#      (.*) Enter email address (.*): "{{ mail }}"
+#      (.*) (A)gree/(C)ancel (.*): "A"
+#      (.*) (Y)es/(N)o (.*): "N"
+#      (.*) Select the appropriate number [1-2] then [enter](.*): "2"

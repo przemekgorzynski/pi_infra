@@ -1,6 +1,6 @@
 nginx ansible_host=192.168.0.60
-nextcloud ansible_host=192.168.0.61
+nas ansible_host=192.168.0.61
 
 [all]
 nginx
-nextcloud
+omv

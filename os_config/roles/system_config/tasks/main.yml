@@ -26,7 +26,7 @@
     path: /etc/hosts
     block: |
       {% for host in groups['all'] %}
-      {{ hostvars[host].ansible_host }} {{ host }}
+      {{ hostvars[host].inventory_hostname }} {{ host }}
       {% endfor %}
   tags:
    - os_config

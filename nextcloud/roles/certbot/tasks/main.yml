@@ -1,0 +1,26 @@
+---
+- name: import certbot role
+  import_role:
+    name: geerlingguy.certbot
+
+#- name: Copy Nginx SSL config
+#  template:
+#    src: ../templates/default.j2
+#    dest: /etc/nginx/sites-enabled/default
+#    force: yes
+#
+#- name: Restart nginx
+#  service:
+#    name: nginx
+#    state: restarted
+#  tags:
+#  - pre_config
+#
+#- name: Set cron to renew SSL certifaces
+#  cron:
+#    name: renew SSL
+#    job: /usr/bin/certbot renew --quiet
+#    weekday: "5"
+#    hour: "16"
+#    minute: "30"
+#    user: root

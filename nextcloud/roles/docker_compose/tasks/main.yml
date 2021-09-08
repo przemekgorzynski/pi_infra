@@ -23,3 +23,10 @@
     msg:  "{{ docker_status.stdout_lines }}"
   tags:
     - general_config_ubunt
+
+- name: Sleep 2 minutes
+  wait_for:
+    timeout: 60
+
+- name: Install smbclient package inside nextcloud container
+  shell: docker exec -it {{ docker_app_name }} bash -c “apt update -y && apt upgrade -y && pecl install smbclient”

@@ -42,7 +42,7 @@ services:
 
   db:
     image: postgres:13.1
-    container_name: nextcloud_postgres
+    container_name: {{ docker_db_name }}
     restart: always
     environment:
       - POSTGRES_USER={{ postgres_root_user }}
@@ -61,7 +61,7 @@ services:
 
   app:
     image: nextcloud
-    container_name: nextcloud_app
+    container_name: {{ docker_app_name }}
     restart: always
     depends_on:
       - db

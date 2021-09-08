@@ -4,3 +4,4 @@ packages:
 - git
 - net-tools
 - vim
+- wget

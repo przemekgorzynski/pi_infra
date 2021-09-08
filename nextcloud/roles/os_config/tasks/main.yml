@@ -3,19 +3,11 @@
   apt:
     name: "{{ nextcloud_packages }}"
     state: present
-  when: inventory_hostname == "nextcloud"
+  when: inventory_hostname == "nas"
   tags:
   - pre_config
 
-- name: Install pip packages
-  pip:
-    name: "{{ pip_packages }}"
-    state: present
-  when: inventory_hostname == "nextcloud"
-  tags:
-  - pre_config
-
-- name: Create Netcloud directories
+- name: Create Nextcloud directories
   file:
     path: "{{ item }}"
     state: directory
@@ -24,49 +16,6 @@
   - /compose
   - /compose/db
   - /compose/nginx
-  - /compose/php
+  - /compose/proxy
   tags:
   - pre_config
-
-- name: Mount Nextcloud storage
-  mount:
-    path: /nextcloud
-    src: "{{ partition_uuid }}"
-    fstype: ext4
-    opts: noatime
-    state: mounted
-  tags:
-  - pre_config
-
-- name: Enable services
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  with_items:
-    - docker
-    - nginx
-  tags:
-  - pre_config
-
-#- name: Copy Nginx default config
-#  template:
-#    src: ../templates/przemekgorzynski.j2
-#    dest: /etc/nginx/conf.d/przemekgorzynski.pl
-#    force: yes
-#
-#- name: Restart nginx
-#  service:
-#    name: nginx
-#    state: restarted
-#  tags:
-#  - pre_config
-#
-#- name: Run certbot commands
-#  expect:
-#    command: certbot --nginx -d przemekgorzynski.pl -d www.przemekgorzynski.pl
-#    responses:
-#      (.*) Enter email address (.*): "{{ mail }}"
-#      (.*) (A)gree/(C)ancel (.*): "A"
-#      (.*) (Y)es/(N)o (.*): "N"
-#      (.*) Select the appropriate number [1-2] then [enter](.*): "2"

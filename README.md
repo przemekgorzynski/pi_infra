@@ -6,4 +6,4 @@ ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas
 ssh pass is default user pi pass: raspberry
 
 NextCloud config
-ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nextcloud --ask-vault-pass
+ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass

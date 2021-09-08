@@ -9,4 +9,4 @@ sudo docker-compose up -d
 
 Go to  http://<instance_ip>:8080 and foinish configuration
 
-![image](https://user-images.githubusercontent.com/43602911/111912560-7f30c080-8a6a-11eb-8eda-736ec7c7d25e.png)
+![Screenshot from 2021-08-31 16-59-47](https://user-images.githubusercontent.com/43602911/132496257-c099cc3f-4c0f-4910-8173-61aa93149281.png)

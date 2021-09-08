@@ -38,13 +38,3 @@
   no_log: True
   tags:
    - os_config
-
-- name: Disable password login
-  replace:
-    path: /etc/ssh/sshd_config
-    regexp: '^PasswordAuthentication yes'
-    replace: 'PasswordAuthentication no'
-  notify:
-    - ssh_restart
-  tags:
-   - os_config

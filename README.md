@@ -22,7 +22,7 @@ Run following command to run docker-compose stack for Nextcloud over ssl. Modify
     ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass
 Go to <yourip>:8080 or https://your-domain-address and finish configuration of Nextcloud.
     
-    ![image](https://user-images.githubusercontent.com/43602911/132582956-08ce9bdd-792a-4e92-9fb4-a17b34966135.png)
+    ![image](https://user-images.githubusercontent.com/43602911/132583728-d8214806-4445-4fa0-90b4-39a9c2778bc1.png)
 
 
 ##############

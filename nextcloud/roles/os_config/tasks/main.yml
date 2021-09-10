@@ -7,6 +7,12 @@
   tags:
   - pre_config
 
+- name: Enable docker service
+  service:
+    name: docker
+    state: enabled
+    state: started
+
 - name: Create Nextcloud directories
   file:
     path: "{{ item }}"

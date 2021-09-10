@@ -2,7 +2,7 @@ postgres_db: nextcloud
 postgres_root_user: root
 postgres_app_user: przemek
 postgres_host: nextcloud_postgres:5432
-domain: przemekgorzynski.pl
+domain: cloud.przemekgorzynski.pl
 email: przemyslaw.gorzynski@protonmail.com
 docker_db_name: nextcloud_postgres
 docker_app_name: nextcloud_app

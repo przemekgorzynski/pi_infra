@@ -22,7 +22,7 @@ Run following command to run docker-compose stack for Nextcloud over ssl. Modify
     ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass
 Go to <yourip>:8080 or https://your-domain-address and finish configuration of Nextcloud.
     
-    ![image](https://user-images.githubusercontent.com/43602911/132583728-d8214806-4445-4fa0-90b4-39a9c2778bc1.png)
+        ![image](https://user-images.githubusercontent.com/43602911/132583728-d8214806-4445-4fa0-90b4-39a9c2778bc1.png)
 
 
 ##############
@@ -31,4 +31,5 @@ Connect CIFS shares from OpenMediavault
         ![image](https://user-images.githubusercontent.com/43602911/132583424-28169c25-cd8b-4780-b420-312eda0629b1.png)
 
     - map shared direcories from OpenMediavault
-        ![image](https://user-images.githubusercontent.com/43602911/132583640-08267450-fe30-464b-89b3-0bcd25911866.png)
+        ![image](https://user-images.githubusercontent.com/43602911/132583977-ac7f5c7e-84fe-4073-a87c-839d687ba461.png)
+

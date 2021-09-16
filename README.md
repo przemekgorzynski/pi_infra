@@ -42,5 +42,14 @@ Go to < yourip >:8080 or https://your-domain-address and finish configuration of
 
 ### On NAS server change following files to enable upload of files over 1 MB via Nextcloud
 
-
-
+* Run command `find / -name "php.ini"` and add following to all files
+  
+    `upload_max_filesize = 16G`
+    `post_max_size = 16G`
+</br>
+* Run commsnd `find / -name ".user.ini"` and add following to all files
+    `upload_max_filesize = 16G`
+    `post_max_size = 16G`
+</br>
+* Edit /etc/nginx/nginx.conf file and add at the end in http section
+    `client_max_body_size 0;`

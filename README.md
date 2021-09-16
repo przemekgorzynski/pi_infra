@@ -40,16 +40,21 @@ Go to < yourip >:8080 or https://your-domain-address and finish configuration of
 ![image](https://user-images.githubusercontent.com/43602911/133678143-bf7ca4d9-3537-4757-9ba9-9d97c12fdaac.png)
 
 
-### On NAS server change following files to enable upload of files over 1 MB via Nextcloud
+### On NAS server change following files to enable upload of files over 1 MB via Nextcloud  ( To automate with ansible )
 
 * Run command `find / -name "php.ini"` and add following to all files
   
-    `upload_max_filesize = 16G`
+    `upload_max_filesize = 16G` </br>
     `post_max_size = 16G`
-</br>
+
+![image](https://user-images.githubusercontent.com/43602911/133679798-d6010d3a-1059-4959-a79a-bd0886813891.png)
+
 * Run commsnd `find / -name ".user.ini"` and add following to all files
-    `upload_max_filesize = 16G`
+
+    `upload_max_filesize = 16G` </br>
     `post_max_size = 16G`
-</br>
+
+![image](https://user-images.githubusercontent.com/43602911/133680053-33df6c76-bcdd-432d-ae9b-2e584fa461f2.png)
+
 * Edit /etc/nginx/nginx.conf file and add at the end in http section
     `client_max_body_size 0;`

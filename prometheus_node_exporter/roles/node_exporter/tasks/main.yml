@@ -1,0 +1,15 @@
+---
+- name: Download binary
+  shell: wget {{ node_exporter_binary_url }} > /node_exporter.tar.gz && tar -xvf /node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1 && sudo rm /node_exporter.tar.gz
+
+- name: Copy node exporter service
+  template:
+    src: ../templates/node_exporter_service
+    dest: /etc/systemd/system/node_exporter.service
+    force: yes
+
+- name: reload exporter service
+  service:
+    name: node_exporter
+    status: started
+    enabled: yes

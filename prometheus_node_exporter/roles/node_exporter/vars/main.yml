@@ -1,0 +1,4 @@
+directories:
+- /monitoring/prometheus_node_exporter_compose
+compose_dir: /monitoring/prometheus_node_exporter_compose
+node_exporter_image: quay.io/prometheus/node-exporter:latest

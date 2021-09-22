@@ -1,0 +1,20 @@
+directories:
+- /monitoring/prometheus_config
+- /monitoring/prometheus_data
+- /monitoring/grafana_data
+- /monitoring/prometheus_grafana_compose
+
+directories_rwx:
+- /monitoring/prometheus_data
+- /monitoring/grafana_data
+
+compose_dir: /monitoring/prometheus_grafana_compose
+
+prometheus_config: /monitoring/prometheus_config
+prometheus_data: /monitoring/prometheus_data
+prometheus_image: prom/prometheus:latest
+prometheus_container_name: prometheus
+
+grafana_container_name: grafana
+grafana_image: grafana/grafana:latest
+grafana_data: /monitoring/grafana_data

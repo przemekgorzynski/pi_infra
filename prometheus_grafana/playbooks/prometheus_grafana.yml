@@ -11,5 +11,5 @@
 
   tasks:
   - import_role:
-      name: prometheus_server
+      name: prometheus_grafana
       tasks_from: main.yml

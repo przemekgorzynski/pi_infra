@@ -4,18 +4,17 @@
   file:
     path: "{{ item }}"
     state: directory
-  with_items:
-  - /prometheus_compose
+  with_items: "{{ directories }}"
 
 
 - name: Copy Docker compose file
   template:
     src: ../templates/compose_node_exporter
-    dest: /prometheus_compose/docker-compose.yml
+    dest: "{{ compose_dir }}/docker-compose.yml"
     force: yes
 
 - name: Deploy Docker Compose stack
-  shell: cd /prometheus_compose && docker-compose up -d
+  shell: cd "{{ compose_dir }}" && docker-compose up -d
 
 - name: Check compose stack is deployed
   shell: docker ps -a
@@ -24,5 +23,3 @@
 - name: Docker status
   debug:
     msg:  "{{ docker_status.stdout_lines }}"
-  tags:
-    - general_config_ubunt

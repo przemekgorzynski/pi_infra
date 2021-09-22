@@ -1,2 +1,0 @@
-prometheus_dir: /prometheus_data
-prometheus_image: prom/prometheus

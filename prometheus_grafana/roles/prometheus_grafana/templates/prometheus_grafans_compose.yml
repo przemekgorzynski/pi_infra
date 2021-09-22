@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 #    command:
 #      - "--config.file=/config/prometheus.yml"
-
+  
   grafana:
     image: "{{ grafana_image }}"
     container_name: "{{ grafana_container_name }}"
@@ -22,3 +22,18 @@ services:
     volumes:
       - {{ grafana_data }}:/var/lib/grafana:rw
     restart: unless-stopped
+  
+  cadvisor:
+    image: "{{ cadvisor_image }}"
+    container_name: "{{ cadvisor_container_name }}"
+    privileged: true
+    ports:
+      - "81:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg

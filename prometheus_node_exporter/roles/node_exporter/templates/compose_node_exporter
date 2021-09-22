@@ -4,7 +4,7 @@ version: '3'
 services:
   node_exporter:
     image: "{{ node_exporter_image }}"
-    container_name: node_exporter
+    container_name: "{{ node_exporter_container_name }}"
     command:
       - '--path.rootfs=/host'
     pid: host
@@ -13,3 +13,18 @@ services:
     - "9100:9100"
     volumes:
       - '/:/host:ro,rslave'
+
+  cadvisor:
+    image: "{{ cadvisor_image }}"
+    container_name: "{{ cadvisor_container_name }}"
+    privileged: true
+    ports:
+    - "81:8080"
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:ro
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    - /dev/disk/:/dev/disk:ro
+    devices:
+    - /dev/kmsg

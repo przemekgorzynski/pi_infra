@@ -18,3 +18,6 @@ prometheus_container_name: prometheus
 grafana_container_name: grafana
 grafana_image: grafana/grafana:latest
 grafana_data: /monitoring/grafana_data
+
+cadvisor_image: budry/cadvisor-arm
+cadvisor_container_name: cadvisor

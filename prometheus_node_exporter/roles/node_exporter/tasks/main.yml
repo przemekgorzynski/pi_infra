@@ -1,15 +1,28 @@
 ---
-- name: Download binary
-  shell: wget {{ node_exporter_binary_url }} > /node_exporter.tar.gz && tar -xvf /node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1 && sudo rm /node_exporter.tar.gz
 
-- name: Copy node exporter service
+- name: Create docker compose directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+  - /prometheus_compose
+
+
+- name: Copy Docker compose file
   template:
-    src: ../templates/node_exporter_service
-    dest: /etc/systemd/system/node_exporter.service
+    src: ../templates/compose_node_exporter
+    dest: /prometheus_compose/docker-compose.yml
     force: yes
 
-- name: reload exporter service
-  service:
-    name: node_exporter
-    status: started
-    enabled: yes
+- name: Deploy Docker Compose stack
+  shell: cd /prometheus_compose && docker-compose up -d
+
+- name: Check compose stack is deployed
+  shell: docker ps -a
+  register: docker_status
+
+- name: Docker status
+  debug:
+    msg:  "{{ docker_status.stdout_lines }}"
+  tags:
+    - general_config_ubunt

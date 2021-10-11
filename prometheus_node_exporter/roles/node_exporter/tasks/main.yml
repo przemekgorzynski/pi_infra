@@ -13,6 +13,12 @@
     dest: "{{ compose_dir }}/docker-compose.yml"
     force: yes
 
+- name: Install docker packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ packages }}"
+
 - name: Deploy Docker Compose stack
   shell: cd "{{ compose_dir }}" && docker-compose up -d
 

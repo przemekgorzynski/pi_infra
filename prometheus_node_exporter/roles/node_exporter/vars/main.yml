@@ -7,3 +7,8 @@ node_exporter_container_name: node_exporter
 
 cadvisor_image: budry/cadvisor-arm
 cadvisor_container_name: cadvisor
+
+packages:
+- docker-compose
+- docker.io
+- docker

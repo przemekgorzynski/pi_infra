@@ -39,6 +39,20 @@
   tags:
    - os_config
 
+- name: Update MOTD messages
+  block:
+    - name: Copy new MOTD script
+      copy:
+        src: ../motd/11-sysinfo.sh
+        dest: /etc/update-motd.d/11-sysinfo.sh
+        mode: '0755'
+        owner: root
+        group: root
+    - name: Clean /etc/motd file
+      copy:
+        content: ""
+        dest: /etc/motd
+
 - name: Control fan speed
   ansible.builtin.blockinfile:
     path: /boot/config.txt

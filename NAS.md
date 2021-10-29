@@ -16,16 +16,6 @@ It does:
 * change pi user password
 * create user przemek
 
-
-## Install OpenMediaVault on system
-Next install Open Media vault
-
-    ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass --ask-pass
-    
-Login into OMV server. Default credentials: admin:openmediavault. </br>
-Confguration of SMB/CIFS in OMV should be done manually. </br>
-Change port from 80 to 8081.
-
 ### Deploy docker compose with Nextcloud stack
 
 Run following command to run docker-compose stack for Nextcloud over ssl. </br> 

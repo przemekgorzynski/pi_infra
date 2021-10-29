@@ -43,8 +43,8 @@
   block:
     - name: Copy new MOTD script
       copy:
-        src: ../motd/11-sysinfo.sh
-        dest: /etc/update-motd.d/11-sysinfo.sh
+        src: ../motd/11-sysinfo
+        dest: /etc/update-motd.d/11-sysinfo
         mode: '0755'
         owner: root
         group: root

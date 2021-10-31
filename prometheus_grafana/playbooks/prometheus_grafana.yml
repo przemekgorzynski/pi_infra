@@ -1,6 +1,6 @@
 ---
 - name: Initiall configuration
-  hosts: all
+  hosts: localhost
   gather_facts: yes
   user: przemek
   become: yes

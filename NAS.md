@@ -10,7 +10,9 @@ In local network shares are exposed via samba/cifs shares.
 ## Basic raspberry pi configuration
 On clean raspios run following commands ( default ssh pass for user pi is "raspberry" ):
 
-    ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass --ask-pass
+`cd os_config`
+`ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass --ask-pass`
+
 It does:
 * update system
 * change pi user password

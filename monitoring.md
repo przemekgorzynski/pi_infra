@@ -4,7 +4,7 @@
 * monitoring/collectd_influxdb_grafana/collectd
 * ansible-playbook -i ../../../inventory playbooks/collectd.yml --limit nas
 
-   Go to http://<<ip>>:9100/metrics and check if exposes metrics
+   Go to http://<<ip>>:9103/metrics and check if exposes metrics
 
 ## Influxdb & Grafana
 * ansible-playbook -i inventory monitoring/collectd_influxdb_grafana/influxdb_grafana/playbooks/collectd.yml --limit nas

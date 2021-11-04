@@ -7,13 +7,13 @@ Two monitoring options:
 # Collectd + InfluxDB + Grafana
 
 ### Collectd agent
-`cd monitoring/collectd_influxdb_grafana/collectd`
+`cd monitoring/collectd_influxdb_grafana/collectd`      
 `ansible-playbook -i ../../../inventory playbooks/collectd.yml --limit SERVERNAME`
 
    Go to http://<<ip>>:9103/metrics and check if exposes metrics
 
 ### Influxdb & Grafana
-`cd monitoring/collectd_influxdb_grafana/influxdb_grafana`
+`cd monitoring/collectd_influxdb_grafana/influxdb_grafana`            
 `ansible-playbook -i ../../../inventory playbooks/influxdb_grafana.yml --limit SERVERNAME`
 
 ================================================================================================

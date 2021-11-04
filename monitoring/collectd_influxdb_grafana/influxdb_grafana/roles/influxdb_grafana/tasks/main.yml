@@ -1,0 +1,44 @@
+---
+- name: Create docker compose directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items: "{{ directories }}"
+
+- name: Set 777 mode on data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0777'
+  with_items: "{{ directories_rwx }}"
+
+- name: Copy Docker compose file
+  template:
+    src: ../templates/compose_influxdb_grafana
+    dest: "{{ compose_dir }}/docker-compose.yml"
+    force: yes
+
+- name: Copy influxdb config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ influxdb_conf }}"
+    force: yes
+  with_items:
+    - ../templates/types.db
+    - ../templates/influxdb.conf
+
+- name: Install docker packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+
+- name: Deploy Docker Compose stack
+  shell: cd "{{ compose_dir }}" && docker-compose up -d
+
+- name: Check compose stack is deployed
+  shell: docker ps -a
+  register: docker_status
+
+- name: Docker status
+  debug:
+    msg:  "{{ docker_status.stdout_lines }}"

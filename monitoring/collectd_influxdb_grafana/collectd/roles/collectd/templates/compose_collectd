@@ -1,0 +1,15 @@
+---
+version: '3'
+
+services:
+  collectd:
+    image: "{{ collectd_image }}"
+    container_name: "{{ collectd_container_name }}"
+    privileged: true
+    network_mode: host
+    ports:
+      - 9103:9103
+    volumes:
+      - /proc:/mnt/proc:ro
+      - {{ compose_dir }}/collectd.conf:/etc/collectd/collectd.conf
+    restart: unless-stopped

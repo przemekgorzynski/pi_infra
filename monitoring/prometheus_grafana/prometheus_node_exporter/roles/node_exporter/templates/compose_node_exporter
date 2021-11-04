@@ -1,0 +1,15 @@
+---
+version: '3'
+
+services:
+  node_exporter:
+    image: "{{ node_exporter_image }}"
+    container_name: "{{ node_exporter_container_name }}"
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    ports:
+    - "9100:9100"
+    volumes:
+      - '/:/host:ro,rslave'

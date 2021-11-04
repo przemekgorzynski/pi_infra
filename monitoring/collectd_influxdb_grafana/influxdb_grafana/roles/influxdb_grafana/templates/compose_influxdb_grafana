@@ -1,0 +1,25 @@
+---
+version: '3'
+
+services:
+  influxdb:
+    image: "{{ influxdb_image }}"
+    container_name: "{{ influxdb_container_name }}"
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "25826:25826/udp"
+    volumes:
+      - {{ influxdb_data }}:/var/lib/influxdb
+      - {{ influxdb_conf }}/influxdb.conf:/etc/influxdb/influxdb.conf
+      - {{ influxdb_conf }}/types.db:/usr/share/collectd/types.db:ro
+    restart: unless-stopped
+  
+  grafana:
+    image: "{{ grafana_image }}"
+    container_name: "{{ grafana_container_name }}"
+    ports:
+      - 3000:3000
+    volumes:
+      - {{ grafana_data }}:/var/lib/grafana:rw
+    restart: unless-stopped

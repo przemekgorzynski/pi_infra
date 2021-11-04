@@ -1,0 +1,25 @@
+directories:
+- /monitoring/compose_influxdb_grafana
+- /monitoring/influxdb_data
+- /monitoring/influxdb_conf
+- /monitoring/grafana_data
+
+influxdb_conf: /monitoring/influxdb_conf
+compose_dir: /monitoring/compose_influxdb_grafana
+
+directories_rwx:
+- /monitoring/influxdb_data
+- /monitoring/grafana_data
+
+influxdb_image: influxdb:latest
+influxdb_container_name: influxdb
+influxdb_data: /monitoring/influxdb_data
+
+grafana_image: grafana/grafana:latest
+grafana_container_name: grafana
+grafana_data: /monitoring/grafana_data
+
+packages:
+- docker-compose
+- docker.io
+- docker

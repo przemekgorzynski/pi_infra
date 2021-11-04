@@ -1,5 +1,5 @@
 # Home Cloud and NAS Infrastructure deployed on raspberry pi compute modules.
-Infrastructure contains NAS server hosted on raspberry pi - Open media vault + Nextcloud to expose it into internet over ssl. </br>
+Infrastructure contains NAS server hosted on raspberry pi. </br>
 In local network shares are exposed via samba/cifs shares.
 
 ![image](https://user-images.githubusercontent.com/43602911/133680838-26ed93f2-ae1e-4694-99b3-52e99e1d8170.png)
@@ -10,7 +10,7 @@ In local network shares are exposed via samba/cifs shares.
 ## Basic raspberry pi configuration
 On clean raspios run following commands ( default ssh pass for user pi is "raspberry" ):
 
-`cd os_config`
+`cd os_config`                                                                                         
 `ansible-playbook -i ../inventory playbooks/initial_configuration.yml --limit nas --ask-vault-pass --ask-pass`
 
 It does:

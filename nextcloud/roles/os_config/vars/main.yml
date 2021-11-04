@@ -1,6 +1,0 @@
-nextcloud_packages:
-- docker-compose
-- docker
-- docker.io
-- python-pip
-- python-docker

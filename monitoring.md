@@ -1,4 +1,4 @@
-Two monitoring options:
+Two monitoring options ( both deployed using docker compose ):
 * Proetheus && Grafana
 * Influxdb  && Grafana
 

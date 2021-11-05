@@ -31,19 +31,11 @@
   tags:
    - os_config
 
-- name: change user pi password
-  user:
-    name: pi
-    password: "{{ pi_pass }}"
-  no_log: True
-  tags:
-   - os_config
-
 - name: Update MOTD messages
   block:
     - name: Copy new MOTD script
       copy:
-        src: ../motd/11-sysinfo
+        src: files/motd_11-sysinfo
         dest: /etc/update-motd.d/11-sysinfo
         mode: '0755'
         owner: root

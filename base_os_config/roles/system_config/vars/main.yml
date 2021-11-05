@@ -5,3 +5,4 @@ packages:
 - net-tools
 - vim
 - wget
+- ufw

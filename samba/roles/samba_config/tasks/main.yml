@@ -1,0 +1,95 @@
+---
+- name: Update system
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+  tags:
+   - samba_config
+
+- name: Install Samba packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  tags:
+   - samba_config
+
+- name: Create samba read_only user
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    state: present
+    shell:  "{{ item.shell }}"
+    groups: "{{ item.groups }}"
+    create_home: no
+  no_log: True
+  loop:
+     - { name: 'ro', password: "{{ ro_pass }}", groups: 'users', shell: '/bin/false' }
+  tags:
+   - samba_config
+
+- name: Create Samba shares root directory
+  file:
+    state: directory
+    path: "{{ samba_shares_root_dir }}"
+    owner: root
+    group: root
+    mode: '0777'
+  tags:
+   - samba_config
+
+- name: mount Hard Drive for Samba Shares
+  mount:
+    path: "{{ samba_shares_root_dir }}"
+    src: /dev/sda1
+    state: present
+    fstype: ext4
+    opts: defaults,nofail
+  tags:
+   - samba_config
+
+- name: Refrest mount drives
+  shell: mount -a
+  tags:
+   - samba_config
+
+- name: Create share directories
+  file:
+    state: directory
+    path: "{{ samba_shares_root_dir }}/{{ item }}"
+    owner: root
+    group: users
+    mode: '2770'
+  with_items: "{{ samba_shares }}"
+  tags:
+   - samba_config
+
+- name: Copy Samba config file
+  template:
+    src: ../templates/smb.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0640'
+  tags:
+   - samba_config
+
+- name: Restart samba
+  service:
+    name: smbd
+    state: restarted
+  tags:
+   - samba_config
+
+- name: Update samba password
+  shell: |
+    echo "{{ przemek_pass }}\n{{ przemek_pass }}" | smbpasswd -a przemek
+    echo "{{ ro_pass }}\n{{ ro_pass }}" | smbpasswd -a ro
+  tags:
+   - samba_config
+
+- name: UFW enable samba
+  shell: sudo ufw allow samba
+  tags:
+   - samba_config

@@ -1,0 +1,21 @@
+---
+- name: Samba config
+  hosts: all
+  gather_facts: yes
+  user: pi
+  become: yes
+  
+  vars_files:
+  -  ../../vault.yml
+  
+  pre_tasks:
+  - name: check connectivity
+    ping:
+
+  tasks:
+  - import_role:
+      name: samba_config
+      tasks_from: main.yml
+#  - import_role:
+#      name: reboot
+#      tasks_from: main.yml

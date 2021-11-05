@@ -1,0 +1,11 @@
+packages:
+- samba
+
+samba_shares_root_dir: /samba_shares
+
+samba_shares:
+- mine
+- exchange
+- foto
+- filmy
+- inne

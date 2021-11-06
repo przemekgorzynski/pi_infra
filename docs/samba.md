@@ -2,7 +2,7 @@
 Installs and configure samba shares.
 
 `cd samba`
-`ansible-playbook -i ../inventory playbooks/samba.yml --limit nas --ask-vault-pass`
+`ansible-playbook -i ../inventory playbooks/samba.yml --limit samba --ask-vault-pass`
 
 It does:
 * installs samba

@@ -5,14 +5,14 @@ Infrastructure include:
 
 
 ### Base config 
-Should run againt every raspberry pi module within infrastructure </br>
+Should run against every raspberry pi module within infrastructure </br>
 https://github.com/przemekgorzynski/pi_infra/docs/blob/master/base_config.md
 
 ### Samba
-Should run again raspberry pi module decidated as samba server
+Should run against raspberry pi module decidated as samba server
 Samba https://github.com/przemekgorzynski/pi_infra/docs/blob/master/NAS.md
 
 ### Monitorin
-Metric collector should run againt every raspberry pi module within infrastructure
-Monitoring server shoulr run agains pi module dedicates as moitoring server
+Metric collector should run against every raspberry pi module within infrastructure
+Monitoring server should run against pi module dedicates as monitoring server
 Monitoring https://github.com/przemekgorzynski/pi_infra/docs/blob/master/monitoring.md  (In progress)

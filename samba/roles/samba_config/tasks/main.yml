@@ -71,7 +71,7 @@
     dest: /etc/samba/smb.conf
     owner: root
     group: root
-    mode: '0640'
+    mode: '0660'
   tags:
    - samba_config
 

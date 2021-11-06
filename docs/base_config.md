@@ -3,7 +3,7 @@
 On clean raspios run following commands ( default ssh pass for user pi is "raspberry" ):
 
 `cd base_config`                                                                                         
-`ansible-playbook -i ../inventory playbooks/base_config.yml --limit SERVERNAME --ask-vault-pass --ask-pass`
+`ansible-playbook -i ../inventory playbooks/base_config.yml --ask-vault-pass --ask-pass`
 
 It does:
 * update system and install custom packages

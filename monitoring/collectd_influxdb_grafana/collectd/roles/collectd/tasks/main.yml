@@ -14,7 +14,7 @@
 
 - name: Copy collectd configuration file
   template:
-    src: ../templates/{{ inventory_hostname }}_collectd.j2
+    src: ../templates/collectd.j2
     dest: "{{ compose_dir }}/collectd.conf"
     force: yes
 

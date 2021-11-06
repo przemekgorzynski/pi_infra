@@ -1,6 +1,6 @@
-mgmnt ansible_host=192.168.0.60
+#mgmnt ansible_host=192.168.0.60
 samba ansible_host=192.168.0.61
 
 [all]
-mgmnt
+#mgmnt
 samba

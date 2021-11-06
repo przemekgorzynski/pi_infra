@@ -10,7 +10,7 @@ Two monitoring options ( both deployed using docker compose ):
 
 ### Collectd agent
 `cd monitoring/collectd_influxdb_grafana/collectd`      
-`ansible-playbook -i ../../../inventory playbooks/collectd.yml --limit SERVERNAME`
+`ansible-playbook -i ../../../inventory playbooks/collectd.yml`
 
       Go to http://<<ip>>:9103/metrics and check if exposes metrics
 

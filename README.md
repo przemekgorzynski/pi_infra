@@ -9,12 +9,12 @@ Should run against every raspberry pi module within infrastructure </br>
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/base_config.md
 
 ### Samba
-Should run against raspberry pi module decidated as samba server
+Should run against raspberry pi module decidated for samba server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/samba.md
 
 ### Monitoring
 Metric collector should run against every raspberry pi module within infrastructure
-Monitoring server should run against pi module dedicates as monitoring server
+Monitoring server should run against pi module dedicates for monitoring server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/monitoring.md
 
 ### Maintenance

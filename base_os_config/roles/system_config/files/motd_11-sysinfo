@@ -11,7 +11,7 @@ SDB1_TOTAL=`df -Ph | grep sdb1 | awk '{ print $2}'`
 MEMORY1=`free -t -m | grep "Mem" | awk '{print $3" MB";}'`
 MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
 RELEASE=`cat /etc/os-release | head -n 1 | awk -F "\"" '{print $2}'`
-MONITORING_CONTAINER=`docker ps -a | grep collectd | awk '{ print $7 " " $8 " " $9 }'`
+METRICS_CONTAINER=`docker ps -a | grep collectd | awk '{ print $7 " " $8 " " $9 }'`
 #System uptime
 uptime=`cat /proc/uptime | cut -f1 -d.`
 upDays=$((uptime/60/60/24))
@@ -22,7 +22,7 @@ upSecs=$((uptime%60))
 echo "
  - OS Release:.............: $RELEASE
  - System uptime...........: $upDays days $upHours hours $upMins minutes $upSecs seconds
- - Monitoring container....: $MONITORING_CONTAINER
+ - Monitoring container....: $METRICS_CONTAINER
  - Memory used.............: $MEMORY1 / $MEMORY2 used
  - SD /boot space..........: $BOOT  / $BOOT_TOTAL used
  - SD / space..............: $ROOT / $ROOT_TOTAL used

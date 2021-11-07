@@ -18,5 +18,5 @@ Monitoring server should run against pi module dedicates as monitoring server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/monitoring.md
 
 ### Maintenance
-Playbook to update packages on all hosts
+Playbook to update packages on all hosts </br>
 `ansible-playbook -i ../inventory maintenance.yml`

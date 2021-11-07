@@ -2,7 +2,7 @@
 - name: Samba config
   hosts: all
   gather_facts: yes
-  user: pi
+  user: przemek
   become: yes
   
   vars_files:

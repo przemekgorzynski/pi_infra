@@ -12,7 +12,11 @@ https://github.com/przemekgorzynski/pi_infra/blob/master/docs/base_config.md
 Should run against raspberry pi module decidated as samba server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/samba.md
 
-### Monitorin
+### Monitoring
 Metric collector should run against every raspberry pi module within infrastructure
 Monitoring server should run against pi module dedicates as monitoring server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/monitoring.md
+
+### Maintenance
+Playbook to update packages on all hosts
+`ansible-playbook -i ../inventory maintenance.yml`

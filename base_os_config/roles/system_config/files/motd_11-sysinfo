@@ -14,7 +14,7 @@ SDB1_FREE=`df -Ph | grep sdb1 | awk '{ print $4}'`
 MEMORY1=`free -t -m | grep "Mem" | awk '{print $3" MB";}'`
 MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
 RELEASE=`cat /etc/os-release | head -n 1 | awk -F "\"" '{print $2}'`
-MONITORING_CONTAINER=`sudo docker ps -a | grep collectd | awk '{ print $7 " " $8 " " $9 }'`
+MONITORING_CONTAINER=`sudo docker ps -a | grep prometheus_node_exporter | awk '{ print $8 " " $9 " " $10 }'`
 #System uptime
 uptime=`cat /proc/uptime | cut -f1 -d.`
 upDays=$((uptime/60/60/24))

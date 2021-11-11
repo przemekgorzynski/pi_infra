@@ -1,25 +1,5 @@
 # Still in progress
 
-Two monitoring options ( both deployed using docker compose ):
-* Proetheus && Grafana
-* Influxdb  && Grafana
-
-===============================================================================================
-
-# Collectd + InfluxDB + Grafana
-
-### Collectd agent
-`cd monitoring/collectd_influxdb_grafana/collectd`      
-`ansible-playbook -i ../../../inventory playbooks/collectd.yml`
-
-      Go to http://<<ip>>:9103/metrics and check if exposes metrics
-
-### Influxdb & Grafana
-`cd monitoring/collectd_influxdb_grafana/influxdb_grafana`            
-`ansible-playbook -i ../../../inventory playbooks/influxdb_grafana.yml --limit SERVERNAME`
-
-================================================================================================
-
 # Prometheus + Grafana
 
 ### Prometheus Node Exporter

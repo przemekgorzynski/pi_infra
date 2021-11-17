@@ -42,7 +42,7 @@
 - name: mount Hard Drive for Samba Shares
   mount:
     path: "{{ samba_shares_root_dir }}"
-    src: /dev/sda1
+    src: "UUID={{ disk1_partition }}"
     state: present
     fstype: ext4
     opts: defaults,nofail

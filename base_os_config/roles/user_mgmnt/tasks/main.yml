@@ -9,7 +9,7 @@
 - name: Create users
   ansible.builtin.user:
     name: "{{ item.name }}"
-    password: "{{ item.password }}"
+    password: "{{ item.password | password_hash('sha512') }}"
     state: present
     shell:  "{{ item.shell }}"
     groups: "{{ item.groups }}"
@@ -25,7 +25,7 @@
     name: pi
     groups: admins
     append: yes
-    password: "{{ pi_pass }}"
+    password: "{{ pi_pass | password_hash('sha512') }}"
   no_log: True
   tags:
     - user_mgmnt

@@ -15,9 +15,8 @@
 
 - name: Install docker packages
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
-  with_items: "{{ packages }}"
 
 - name: Deploy Docker Compose stack
   shell: cd "{{ compose_dir }}" && docker-compose up -d

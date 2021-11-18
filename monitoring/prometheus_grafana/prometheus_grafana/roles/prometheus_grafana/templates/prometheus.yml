@@ -13,4 +13,4 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-        - '192.168.0.61:9100'    # NAS
+        - '192.168.0.61:9100'    # SAMBA

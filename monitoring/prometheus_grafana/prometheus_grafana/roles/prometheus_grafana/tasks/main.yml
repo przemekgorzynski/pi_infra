@@ -19,7 +19,7 @@
 
 - name: Copy Docker compose file prometheus server + grafana
   template:
-    src: ../templates/prometheus_grafans_compose.yml
+    src: ../templates/prometheus_grafans_compose.j2
     dest: "{{ compose_dir }}/docker-compose.yml"
     force: yes
 

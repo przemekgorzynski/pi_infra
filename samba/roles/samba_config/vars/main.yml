@@ -1,5 +1,6 @@
 packages:
 - samba
+- smartmontools
 
 samba_shares_root_dir: /samba_shares
 

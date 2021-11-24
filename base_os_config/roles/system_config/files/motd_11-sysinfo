@@ -21,10 +21,13 @@ upDays=$((uptime/60/60/24))
 upHours=$((uptime/60/60%24))
 upMins=$((uptime/60%60))
 upSecs=$((uptime%60))
+#Temperature
+cpu_temp=`sudo vcgencmd measure_temp`
 
 echo "
  - OS Release:.............: $RELEASE
  - System uptime...........: $upDays days $upHours hours $upMins minutes $upSecs seconds
+ - CPU Temp................: `echo "$cpu_temp" | awk -F '=' '{ print $2 }'`
  - Monitoring container....: $MONITORING_CONTAINER
  - Memory used.............: $MEMORY1 / $MEMORY2 used
  - SD /boot space..........: $BOOT  / $BOOT_TOTAL used; $BOOT_FREE Free

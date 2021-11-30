@@ -42,7 +42,17 @@
 - name: mount Hard Drive for Samba Shares
   mount:
     path: "{{ samba_shares_root_dir }}"
-    src: "UUID={{ disk1_partition }}"
+    src: "UUID={{ main_disk_partition }}"
+    state: present
+    fstype: ext4
+    opts: defaults,nofail
+  tags:
+   - samba_config
+
+- name: mount Backup Hard Drive for Samba
+  mount:
+    path: "{{ backup_samba_shares_root_dir }}"
+    src: "UUID={{ backup_disk_partition }}"
     state: present
     fstype: ext4
     opts: defaults,nofail

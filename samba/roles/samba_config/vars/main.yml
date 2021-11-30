@@ -3,6 +3,7 @@ packages:
 - smartmontools
 
 samba_shares_root_dir: /samba_shares
+backup_samba_shares_root_dir: /samba_shares_backup
 
 main_disk_partition: 3f3c9183-52ad-4be6-b20b-7d0a0e9b7528
 backup_disk_partition: 98bf8b80-7327-4f3d-bdf6-6bf6fbf89ba1

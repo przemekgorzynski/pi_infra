@@ -29,13 +29,16 @@
   tags:
    - samba_config
 
-- name: Create Samba shares root directory
+- name: Create Samba shares 
   file:
     state: directory
-    path: "{{ samba_shares_root_dir }}"
+    path: "{{ item }}"
     owner: root
     group: root
     mode: '0777'
+  with_items:
+    - "{{ samba_shares_root_dir }}"
+    - "{{ backup_samba_shares_root_dir }}"
   tags:
    - samba_config
 

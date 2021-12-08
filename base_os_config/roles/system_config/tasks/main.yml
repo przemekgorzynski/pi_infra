@@ -44,6 +44,9 @@
       copy:
         content: ""
         dest: /etc/motd
+       
+- name: Set timezone to Europe/Warsaw
+  shell: sudo timedatectl set-timezone "Europe/Warsaw"
 
 - name: Control fan speed
   ansible.builtin.blockinfile:

@@ -1,4 +1,4 @@
-## SAMBA config (2do)
+## SAMBA config
 Installs and configure samba shares.
 
 `cd samba`

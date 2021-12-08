@@ -6,6 +6,6 @@ Installs and configure samba shares.
 
 It does:
 * installs samba
-* creates ro user for samba "read only" accessaccess
+* creates ro user for samba "read only" access - no shell login available
 * mounts externall SSD drice where samba shares will be stored
 * configure samba shares

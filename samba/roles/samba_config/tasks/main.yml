@@ -78,6 +78,17 @@
   tags:
    - samba_config
 
+- name: Create share backup directories
+  file:
+    state: directory
+    path: "{{ backup_samba_shares_root_dir }}/{{ item }}"
+    owner: root
+    group: users
+    mode: '2770'
+  with_items: "{{ samba_backup_shares }}"
+  tags:
+   - samba_config
+
 - name: Copy Samba config file
   template:
     src: ../templates/smb.j2

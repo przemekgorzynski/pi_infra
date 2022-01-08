@@ -1,7 +1,4 @@
 #!/bin/sh
-BOOT=`df -Ph | grep boot | awk '{ print $3}'`
-BOOT_TOTAL=`df -Ph | grep boot | awk '{ print $2}'`
-BOOT_FREE=`df -Ph | grep boot | awk '{ print $4}'`
 ROOT=`df -Ph | grep root | awk '{ print $3}'`
 ROOT_TOTAL=`df -Ph | grep root | awk '{ print $2}'`
 ROOT_FREE=`df -Ph | grep root | awk '{ print $4}'`
@@ -29,9 +26,8 @@ echo "
  - System uptime...........: $upDays days $upHours hours $upMins minutes $upSecs seconds
  - CPU Temp................: `echo "$cpu_temp" | awk -F '=' '{ print $2 }'`
  - Monitoring container....: $MONITORING_CONTAINER
- - Memory used.............: $MEMORY1 / $MEMORY2 used
- - SD /boot space..........: $BOOT  / $BOOT_TOTAL used; $BOOT_FREE Free
- - SD / space..............: $ROOT / $ROOT_TOTAL used; $ROOT_FREE Free
+ - RAM memory..............: $MEMORY1 / $MEMORY2 used
+ - SD card space...........: $ROOT / $ROOT_TOTAL used; $ROOT_FREE Free
  - SDA disk space..........: `if [ $SDA1 > 0 ]; then echo "$SDA1 / $SDA1_TOTAL used; $SDA1_FREE Free"; else echo "SDA disk not mounted"; fi`
  - SDB disk space..........: `if [ $SDB1 > 0 ]; then echo "$SDB1 / $SDB1_TOTAL used; $SDB1_FREE Free"; else echo "SDB disk not mounted"; fi`
 "

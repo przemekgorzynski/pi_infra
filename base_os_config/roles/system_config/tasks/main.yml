@@ -26,8 +26,17 @@
     path: /etc/hosts
     block: |
       {% for host in groups['all'] %}
-      {{ hostvars[host].inventory_hostname }} {{ host }}
+      {{ hostvars[host].ansible_host }} {{ host }}
       {% endfor %}
+  tags:
+   - os_config
+
+- name: Update /etc/resolv.conf
+  blockinfile:
+    path: /etc/resolv.conf
+    block: |
+      nameserver {{ hostvars['samba'].ansible_host }}
+      nameserver 1.1.1.1
   tags:
    - os_config
 

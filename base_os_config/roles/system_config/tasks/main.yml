@@ -31,15 +31,6 @@
   tags:
    - os_config
 
-- name: Update /etc/resolv.conf
-  blockinfile:
-    path: /etc/resolv.conf
-    block: |
-      nameserver {{ hostvars['samba'].ansible_host }}
-      nameserver 1.1.1.1
-  tags:
-   - os_config
-
 - name: Update MOTD messages
   block:
     - name: Copy new MOTD script

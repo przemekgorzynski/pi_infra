@@ -34,7 +34,7 @@
   authorized_key:
     user: "{{ item }}"
     state: present
-    key: "{{ lookup('file', '../files/id_rsa_przemek.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   with_items:
     - przemek
     - pi

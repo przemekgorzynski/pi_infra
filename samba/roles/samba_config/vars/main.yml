@@ -6,7 +6,7 @@ samba_shares_root_dir: /samba_shares
 backup_samba_shares_root_dir: /samba_shares_backup
 
 main_disk_partition: 3f3c9183-52ad-4be6-b20b-7d0a0e9b7528
-backup_disk_partition: 73962451-806f-4bd0-ac3d-e30b82298e0b
+backup_disk_partition: 1c5dcb51-59e7-4013-95e2-b2662611ccba
 
 samba_shares:
 - mine

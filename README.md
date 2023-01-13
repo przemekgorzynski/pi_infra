@@ -1,4 +1,4 @@
-# Local inftarstructure built on raspberri pi.
+# Local inftarstructure built on raspbery pi.
 Infrastructure include:
 - samba server
 - monitoring server

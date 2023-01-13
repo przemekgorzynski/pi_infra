@@ -117,3 +117,11 @@
   shell: sudo ufw allow samba
   tags:
    - samba_config
+
+- name: set rsync cron task
+  ansible.builtin.cron:
+    name: "samba rsync"
+    special_time: reboot
+    job: "rsync  -azvh --delete --exclude 'filmy' /samba_shares /samba_shares_backup/samba_shares_sync/"
+  tags:
+    - cron

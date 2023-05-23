@@ -7,15 +7,9 @@ global:
 # (Optional) Log information
 # ---
 log:
-  level: ERROR  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
   format: common  # common, json, logfmt
 #   filePath: /var/log/traefik/traefik.log
-
-# (Optional) Accesslog
-# ---
-# accesslog:
-  # format: common  # common, json, logfmt
-  # filePath: /var/log/traefik/access.log
 
 # (Optional) Enable API and Dashboard
 # ---
@@ -25,7 +19,7 @@ api:
 
 # Entry Points configuration
 # ---
-entrypoints:
+entryPoints:
   web:
     address: :80
     # (Optional) Redirect to HTTPS
@@ -46,26 +40,14 @@ certificatesResolvers:
       storage: /letsencrypt/acme.json
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       dnschallenge:
-        provider: dynu
-  prod:
+       provider: dynu
+  production:
      acme:
       email: pszemazzz@proton.me
       storage: /letsencrypt/acme.json
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       dnschallenge:
         provider: dynu
-
-# (Optional) Overwrite Default Certificates
-# tls:
-#   stores:
-#     default:
-#       defaultCertificate:
-#         certFile: /etc/traefik/certs/cert.pem
-#         keyFile: /etc/traefik/certs/cert-key.pem
-# (Optional) Disable TLS version 1.0 and 1.1
-#   options:
-#     default:
-#       minVersion: VersionTLS12
 
 providers:
   docker:

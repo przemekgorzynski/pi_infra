@@ -4,6 +4,12 @@ Still in development
 -----------
 ## req 1
 
+Set environment variable DYNU_API_KEY wit your api key - insert into .bashrc file.</br>
+It is necessary to obtain SSL certificate.
+
+-----------
+## req 2
+
 Directory structure
 
 ```
@@ -15,7 +21,9 @@ Directory structure
     │   │   └── prometheus.yml
     │   └── prometheus_data
     └── prometheus_node_exporter
-        └── docker-compose.yml
+    |    └── docker-compose.yml
+    └── traefik
+         └── docker-compose.yml
 
 ```
 
@@ -24,14 +32,14 @@ Directories with chmod 777
 - /monitoring/prometheus_grafana/grafana_data
 
 -----------
-## req 2
+## req 3
 docker netowork called monitoring
 
 ```
 docker network create monitoring
 ```
 ---------
-## req 3
+## req 4
 Newest docker compose installed from pip3
 ```
 apt install python3-pip

@@ -1,4 +1,4 @@
-ersion: '3.8'
+version: '3.8'
 
 networks:
   monitoring:
@@ -8,10 +8,6 @@ networks:
 volumes:
   traefik-ssl-certs:
     driver: local
-
-secrets:
-   dynu_api_key:
-     file: dynu_api_key.txt
 
 services:
   traefik:
@@ -23,10 +19,8 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    secrets:                    
-     - dynu_api_key
     environment:
-      - DYNU_API_KEY=/run/secrets/dynu_api_key
+      DYNU_API_KEY: ${DYNU_API_KEY} 
     volumes:
       - traefik-ssl-certs:/letsencrypt
       - /etc/traefik:/etc/traefik

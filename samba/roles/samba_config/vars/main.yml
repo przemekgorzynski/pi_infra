@@ -16,4 +16,8 @@ samba_shares:
 - inne
 
 samba_backup_shares:
-- other
+- new
+- samba_shares_sync
+
+samba_rsync_logfile: /var/log/rsync.log
+samba_rsync_file_path: /rsync.sh

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sleep 60
+
+if grep -qs '{{ samba_shares_root_dir }} ' /proc/mounts; then
+    if grep -qs '{{ backup_samba_shares_root_dir }} ' /proc/mounts; then
+        echo "`date` rsync started" >> {{ samba_rsync_logfile }}
+        rsync  -az --delete --exclude 'filmy' {{ samba_shares_root_dir }} {{ backup_samba_shares_root_dir }}/samba_shares_sync
+        echo "`date` rsync finished" >> {{ samba_rsync_logfile }}
+    else
+    echo "{{ backup_samba_shares_root_dir }} not mounted." >> {{ samba_rsync_logfile }}
+    fi
+else
+    echo "{{ samba_shares_root_dir }} not mounted." >> {{ samba_rsync_logfile }}
+fi

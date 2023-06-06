@@ -42,7 +42,7 @@
   tags:
    - samba_config
 
-- name: mount Hard Drive for Samba Shares
+- name: mount Hard Drive for Samba
   mount:
     path: "{{ samba_shares_root_dir }}"
     src: "UUID={{ main_disk_partition }}"
@@ -114,14 +114,36 @@
    - samba_config
 
 - name: UFW enable samba
-  shell: sudo ufw allow samba
+  shell: ufw allow samba
   tags:
    - samba_config
 
+- name: Create Rsync log file 
+  file:
+    state: touch
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0660'
+  with_items:
+    - "{{ samba_rsync_logfile }}"
+  tags:
+   - samba_config
+
+- name: Copy Rsync script
+  template:
+    src: ../templates/rsync.j2
+    dest: "{{ samba_rsync_file_path }}"
+    owner: root
+    group: root
+    mode: '0770'
+  tags:
+   - rsync
+  
 - name: set rsync cron task
   ansible.builtin.cron:
     name: "samba rsync"
     special_time: reboot
-    job: "rsync  -azvh --delete --exclude 'filmy' /samba_shares /samba_shares_backup/samba_shares_sync/"
+    job: "nohup {{ samba_rsync_file_path }}"
   tags:
     - cron

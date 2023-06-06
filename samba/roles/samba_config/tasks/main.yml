@@ -144,6 +144,6 @@
   ansible.builtin.cron:
     name: "samba rsync"
     special_time: reboot
-    job: "nohup {{ samba_rsync_file_path }}"
+    job: "{{ samba_rsync_file_path }} 2>&1"
   tags:
     - cron

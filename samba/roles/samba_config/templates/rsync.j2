@@ -2,7 +2,7 @@
 
 sleep 60
 
-echo "########### `date +"%m-%d-%Y"` ################" >> {{ samba_rsync_logfile }}
+echo "########### `date +"%d-%m-%Y"` ################" >> {{ samba_rsync_logfile }}
 if grep -qs '{{ samba_shares_root_dir }} ' /proc/mounts; then
     if grep -qs '{{ backup_samba_shares_root_dir }} ' /proc/mounts; then
         

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    networks:
+      - monitoring
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /homeassistant/data:/config
+    ports:
+      - 8123:8123
+#    devices:
+#      - /path/to/device:/path/to/device #optional gateway device
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`homeassistant.pgorzynski.freeddns.org`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=production"
+
+networks:
+  monitoring:
+    name: monitoring
+    external: true

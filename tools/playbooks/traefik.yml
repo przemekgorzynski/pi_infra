@@ -68,7 +68,4 @@
     debug:
       msg: |
         State: {{ result.container['State']['Status'] }}
-        Started: {{ result.container['State']['StartedAt'] }}
-        ExitCode: {{ result.container['State']['ExitCode'] }}
-        Error: {{ result.container['State']['Error'] }}
     when: result.exists

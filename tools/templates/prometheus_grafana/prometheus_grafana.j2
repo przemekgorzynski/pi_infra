@@ -20,18 +20,18 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
 
-#  grafana:
-#    image: grafana/grafana:latest
-#    container_name: grafana
-#    ports:
-#      - "3000:3000"
-#    networks:
-#      - tooling
-#    volumes:
-#      - "/monitoring/prometheus_grafana/grafana_data:/var/lib/grafana:rw"
-#    restart: unless-stopped
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.grafana.rule=Host(`grafana.pgorzynski.freeddns.org`)"
-#      - "traefik.http.routers.grafana.entrypoints=websecure"
-#      - "traefik.http.routers.grafana.tls.certresolver=production"
+  grafana:
+    image: {{ grafana_image }}
+    container_name: {{ grafana_container_name }}
+    ports:
+      - {{ grafana_host_port }}:{{ grafana_container_port }}
+    networks:
+      - {{ docker_network }}
+    volumes:
+      - "{{ monitoring_directories[4] }}:/var/lib/grafana:rw"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.{{ domain }}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=production"

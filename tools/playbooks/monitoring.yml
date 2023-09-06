@@ -29,15 +29,16 @@
     - "{{ monitoring_directories[0] }}"
     - "{{ monitoring_directories[1] }}"
     - "{{ monitoring_directories[2] }}"
-  - name: Make monitoring directories r2x
+  - name: Make monitoring directories rwx
     file:
       state: directory
       path: "{{ item }}"
       owner: root
       group: root
-      mode: '0755'
+      mode: '0777'
     with_items:
     - "{{ monitoring_directories[3] }}"
+    - "{{ monitoring_directories[4] }}"
   - name: Create docker network {{ docker_network }}
     docker_network:
       name: "{{ docker_network }}"
@@ -91,9 +92,16 @@
 
   tasks:
   - name: Copy Prometheus config file
-    template:
+    copy:
       src: ../templates/prometheus_grafana/prometheus.yml
       dest: "{{ monitoring_directories[2] }}/prometheus.yml"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy Grafana Dashboard
+    copy:
+      src: ../templates/prometheus_grafana/grafana_dashboard.json
+      dest: "{{ monitoring_directories[1] }}/grafana_dashboard.json"
       owner: root
       group: root
       mode: '0644'
@@ -116,7 +124,13 @@
     debug:
       msg: |
         State: {{ result.container['State']['Status'] }}
-        Started: {{ result.container['State']['StartedAt'] }}
-        ExitCode: {{ result.container['State']['ExitCode'] }}
-        Error: {{ result.container['State']['Error'] }}
+    when: result.exists
+  - name: Get {{ grafana_container_name }} container info
+    docker_container_info:
+      name: "{{ grafana_container_name }}"
+    register: result
+  - name: Print the status of the {{ grafana_container_name }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
     when: result.exists

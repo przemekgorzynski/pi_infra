@@ -1,10 +1,15 @@
 ---
 version: '3.8'
 
+networks: 
+  {{ docker_network }}:
+    external: true
+    driver: bridge
+
 services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
-    container_name: node_exporter
+    container_name: {{ prometheus_node_exporter_container_name }}
     command:
       - '--path.rootfs=/host'
     pid: host
@@ -13,3 +18,5 @@ services:
       - "9100:9100"
     volumes:
       - '/:/host:ro,rslave'
+    networks:
+      - {{ docker_network }}

@@ -1,5 +1,5 @@
 ---
-- name: Samba config
+- name: Traefik config
   hosts: all
   gather_facts: yes
   user: przemek

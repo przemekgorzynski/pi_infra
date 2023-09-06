@@ -1,0 +1,65 @@
+---
+- name: Pre-config
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+
+  tasks:
+  - name: check connectivity
+    ping:
+  - name: Update system
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      autoremove: yes
+
+- name: Prmetheus node exporter config
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+  
+  vars_files:
+  -  ../../vault.yml
+  - vars.yml
+
+  tasks:
+  - name: Make monitoring directories
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: root
+      group: root
+      mode: '0644'
+    with_items:
+    - "{{ monitoring_directories }}"
+  - name: Create docker network {{ docker_network }}
+    docker_network:
+      name: "{{ docker_network }}"
+  - name: Copy prmetheus node-exporter docker-compose file
+    template:
+      src: ../templates/prometheus_node_exporter/prometheus_node_exporter.j2
+      dest: "{{ monitoring_directories[0] }}/docker-compose.yml"
+      owner: root
+      group: root
+      mode: '0660'
+  - name: Start node exporter
+    ansible.builtin.shell:
+      cmd: docker-compose up -d 
+      chdir: "{{ monitoring_directories[0]}}"
+  - name: Get {{ prometheus_node_exporter_container_name }} container info
+    docker_container_info:
+      name: "{{ prometheus_node_exporter_container_name }}"
+    register: result
+  - name: Print the status of the {{ prometheus_node_exporter_container_name }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
+        Started: {{ result.container['State']['StartedAt'] }}
+        ExitCode: {{ result.container['State']['ExitCode'] }}
+        Error: {{ result.container['State']['Error'] }}
+    when: result.exists

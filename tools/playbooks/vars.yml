@@ -2,3 +2,8 @@ docker_network: tooling
 traefik_container_name: traefik
 traefik_directory: /tooling/traefik
 traefik_log_dir: /var/log/traefik
+
+monitoring_directories:
+- /tooling/monitoring/prometheus_node_exporter
+- /tooling/monitoring/grafana
+prometheus_node_exporter_container_name: node_exporter

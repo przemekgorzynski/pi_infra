@@ -33,8 +33,8 @@
   file:
     state: directory
     path: "{{ item }}"
-    owner: root
-    group: root
+    owner: www-data
+    group: www-data
     mode: '0777'
   with_items:
     - "{{ samba_shares_root_dir }}"
@@ -71,8 +71,8 @@
   file:
     state: directory
     path: "{{ samba_shares_root_dir }}/{{ item }}"
-    owner: root
-    group: users
+    owner: www-data
+    group: www-data
     mode: '2770'
   with_items: "{{ samba_shares }}"
   tags:
@@ -82,8 +82,8 @@
   file:
     state: directory
     path: "{{ backup_samba_shares_root_dir }}/{{ item }}"
-    owner: root
-    group: users
+    owner: www-data
+    group: www-data
     mode: '2770'
   with_items: "{{ samba_backup_shares }}"
   tags:

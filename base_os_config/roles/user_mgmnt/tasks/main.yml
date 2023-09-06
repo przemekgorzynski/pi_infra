@@ -16,7 +16,7 @@
     create_home: yes
   no_log: True
   loop:
-    - { name: 'przemek', password: "{{ przemek_pass }}", groups: 'users,sudo,admins', shell: '/bin/bash' }
+    - { name: 'przemek', password: "{{ przemek_pass }}", groups: 'users,sudo,admins,www-data', shell: '/bin/bash' }
   tags:
     - user_mgmnt
 

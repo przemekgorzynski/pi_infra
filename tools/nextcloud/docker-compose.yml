@@ -40,8 +40,9 @@ services:
       - db
     volumes:
       - nextcloud:/var/www/html
-      - /tooling/tools/nextcloud/config:/var/www/html/config
-      # - /samba_shares:data
+      - /samba_shares:/mnt/samba_shares
+      #- /tooling/tools/nextcloud/config:/var/www/html/config
+      #- /samba_shares:data
     environment:
       - MYSQL_PASSWORD="asdykR^%afsaf459ur"
       - MYSQL_DATABASE=nextcloud

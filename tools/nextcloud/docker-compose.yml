@@ -4,10 +4,10 @@ volumes:
   nextcloud:
   db:
 
-networks:
-  monitoring:
-    name: monitoring
+networks: 
+  tooling:
     external: true
+    driver: bridge
 
 services:
   db:
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
     container_name: nextcloud_db
     networks:
-      - monitoring
+      - tooling
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
     volumes:
       - db:/var/lib/mysql
@@ -35,7 +35,7 @@ services:
     expose:
     - "80"
     networks:
-      - monitoring
+      - tooling
     links:
       - db
     volumes:
@@ -51,3 +51,4 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`nextcloud.pgorzynski.freeddns.org`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=production"
+      - "traefik.http.services.grafana.loadbalancer.server.port=80"

@@ -1,5 +1,10 @@
 version: '3.8'
 
+networks: 
+  tooling:
+    external: true
+    driver: bridge
+    
 volumes:
   traefik-ssl-certs:
     driver: local
@@ -8,6 +13,8 @@ services:
   traefik:
     image: "traefik:latest"
     container_name: "traefik"
+    networks:
+      - tooling
     ports:
       - "80:80"
       - "443:443"

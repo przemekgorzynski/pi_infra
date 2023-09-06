@@ -51,6 +51,7 @@ certificatesResolvers:
 
 providers:
   docker:
+    watch: true
     exposedByDefault: false  # Default is true
   file:
     # watch for dynamic configuration changes

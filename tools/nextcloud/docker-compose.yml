@@ -40,6 +40,7 @@ services:
       - db
     volumes:
       - nextcloud:/var/www/html
+      - /tooling/tools/nextcloud/config:/var/www/html/config
       # - /samba_shares:data
     environment:
       - MYSQL_PASSWORD="asdykR^%afsaf459ur"
@@ -48,7 +49,6 @@ services:
       - MYSQL_HOST=db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`nextcloud.pgorzynski.freeddns.org`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=production"
-      - "traefik.http.services.grafana.loadbalancer.server.port=80"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.pgorzynski.freeddns.org`)"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.tls.certresolver=production"

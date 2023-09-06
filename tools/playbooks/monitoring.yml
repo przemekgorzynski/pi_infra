@@ -1,10 +1,13 @@
 ---
-- name: Pre-config
+- name: PRE-CONFIG
   hosts: all
   gather_facts: yes
   user: przemek
   become: yes
   become_user: root
+
+  vars_files:
+  - vars.yml
 
   tasks:
   - name: check connectivity
@@ -15,8 +18,31 @@
       state: latest
       update_cache: yes
       autoremove: yes
+  - name: Make monitoring directories r-x
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: root
+      group: root
+      mode: '0755'
+    with_items:
+    - "{{ monitoring_directories[0] }}"
+    - "{{ monitoring_directories[1] }}"
+    - "{{ monitoring_directories[2] }}"
+  - name: Make monitoring directories r2x
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: root
+      group: root
+      mode: '0755'
+    with_items:
+    - "{{ monitoring_directories[3] }}"
+  - name: Create docker network {{ docker_network }}
+    docker_network:
+      name: "{{ docker_network }}"
 
-- name: Prmetheus node exporter config
+- name: PROMETHEUS NODE EXPORTER
   hosts: all
   gather_facts: yes
   user: przemek
@@ -28,18 +54,6 @@
   - vars.yml
 
   tasks:
-  - name: Make monitoring directories
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '0644'
-    with_items:
-    - "{{ monitoring_directories }}"
-  - name: Create docker network {{ docker_network }}
-    docker_network:
-      name: "{{ docker_network }}"
   - name: Copy prmetheus node-exporter docker-compose file
     template:
       src: ../templates/prometheus_node_exporter/prometheus_node_exporter.j2
@@ -56,6 +70,49 @@
       name: "{{ prometheus_node_exporter_container_name }}"
     register: result
   - name: Print the status of the {{ prometheus_node_exporter_container_name }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
+        Started: {{ result.container['State']['StartedAt'] }}
+        ExitCode: {{ result.container['State']['ExitCode'] }}
+        Error: {{ result.container['State']['Error'] }}
+    when: result.exists
+
+- name: PROMETHEUS & GRAFANA CONFIG
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+  
+  vars_files:
+  -  ../../vault.yml
+  - vars.yml
+
+  tasks:
+  - name: Copy Prometheus config file
+    template:
+      src: ../templates/prometheus_grafana/prometheus.yml
+      dest: "{{ monitoring_directories[2] }}/prometheus.yml"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy P&G stack docker-compose file
+    template:
+      src: ../templates/prometheus_grafana/prometheus_grafana.j2
+      dest: "{{ monitoring_directories[1] }}/docker-compose.yml"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Start P&G docker-compose
+    ansible.builtin.shell:
+      cmd: docker-compose up -d 
+      chdir: "{{ monitoring_directories[1] }}"
+  - name: Get {{ prometheus_container_name }} container info
+    docker_container_info:
+      name: "{{ prometheus_container_name }}"
+    register: result
+  - name: Print the status of the {{ prometheus_container_name }} container
     debug:
       msg: |
         State: {{ result.container['State']['Status'] }}

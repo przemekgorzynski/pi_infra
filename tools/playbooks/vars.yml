@@ -4,6 +4,16 @@ traefik_directory: /tooling/traefik
 traefik_log_dir: /var/log/traefik
 
 monitoring_directories:
-- /tooling/monitoring/prometheus_node_exporter
-- /tooling/monitoring/grafana
+- /tooling/monitoring/prometheus_node_exporter  #r-x
+- /tooling/monitoring/prometheus_grafana        #r-x
+- /tooling/monitoring/prometheus_grafana/prometheus_config  #r-x
+- /tooling/monitoring/prometheus_grafana/prometheus_data    #rwx
+prometheus_node_exporter_image: quay.io/prometheus/node-exporter:latest
 prometheus_node_exporter_container_name: node_exporter
+prometheus_node_exporter_host_port: 9100
+prometheus_node_exporter_container_port: 9100
+
+prometheus_image: prom/prometheus:latest
+prometheus_container_name: prometheus
+prometheus_host_port: 9090
+prometheus_container_port: 9090

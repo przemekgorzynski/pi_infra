@@ -1,0 +1,74 @@
+---
+- name: Samba config
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+  
+  vars_files:
+  -  ../../vault.yml
+  - vars.yml
+  
+  pre_tasks:
+  - name: check connectivity
+    ping:
+
+  tasks:
+  - name: Update system
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      autoremove: yes
+  - name: Create traefik log file
+    file:
+      state: file
+      path: "{{ traefik_log_dir }}/traefik.log"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Make traefik directories
+    file:
+      state: directory
+      path: "{{ traefik_directory }}"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy traefik config file
+    ansible.builtin.copy:
+      src: ../templates/traefik/traefik.yml
+      dest: /etc/traefik/traefik.yml
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Setup DNS provider auth variables
+    ansible.builtin.lineinfile:
+      path: /etc/environment
+      line: DYNU_API_KEY={{ DYNU_API_KEY }}
+  - name: Create docker network {{ docker_network }}
+    docker_network:
+      name: "{{ docker_network }}"
+  - name: Copy traefik docker-compose file
+    template:
+      src: ../templates/traefik/traefik.j2
+      dest: /tooling/traefik/docker-compose.yml
+      owner: root
+      group: root
+      mode: '0660'
+  - name: Start traefik
+    ansible.builtin.shell:
+      cmd: docker-compose up -d 
+      chdir: "{{ traefik_directory}}"
+  - name: Get {{ traefik_container_name }} container info
+    docker_container_info:
+      name: "{{ traefik_container_name }}"
+    register: result
+  - name: Print the status of the {{ traefik_container_name }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
+        Started: {{ result.container['State']['StartedAt'] }}
+        ExitCode: {{ result.container['State']['ExitCode'] }}
+        Error: {{ result.container['State']['Error'] }}
+    when: result.exists

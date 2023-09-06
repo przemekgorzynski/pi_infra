@@ -9,14 +9,7 @@ services:
       - '--path.rootfs=/host'
     pid: host
     restart: unless-stopped    
-    networks:
-      - monitoring
     ports:
       - "9100:9100"
     volumes:
       - '/:/host:ro,rslave'
-
-networks:
-  monitoring:
-    name: monitoring
-    external: true

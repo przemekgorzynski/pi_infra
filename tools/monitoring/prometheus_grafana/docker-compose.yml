@@ -10,8 +10,6 @@ services:
       - /monitoring/prometheus_grafana/prometheus_config:/etc/prometheus
       - /monitoring/prometheus_grafana/prometheus_data:/prometheus
     restart: unless-stopped
-    networks:
-      - monitoring
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
 
@@ -23,15 +21,14 @@ services:
     volumes:
       - "/monitoring/prometheus_grafana/grafana_data:/var/lib/grafana:rw"
     restart: unless-stopped
-    networks:
-      - monitoring
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`grafana.pgorzynski.freeddns.org`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=production"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.pgorzynski.freeddns.org`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=production"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
-networks:
-  monitoring:
-    name: monitoring
-    external: true
+      # - "traefik.http.routers.grafana_http.rule=Host(`grafana.pgorzynski.freeddns.org`)"
+      # - "traefik.http.routers.grafana_http.entrypoints=web"
+      # - "traefik.http.routers.grafana_http.middlewares=redirect-to-https"
+      # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"

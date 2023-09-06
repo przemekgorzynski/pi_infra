@@ -1,0 +1,53 @@
+version: '3.8'
+
+volumes:
+  nextcloud:
+  db:
+
+networks:
+  monitoring:
+    name: monitoring
+    external: true
+
+services:
+  db:
+    image: mariadb:10.6
+    restart: unless-stopped
+    container_name: nextcloud_db
+    networks:
+      - monitoring
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD="asdykR^%afsaf459ur"
+      - MYSQL_PASSWORD="asdykR^%afsaf459ur"
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: nextcloud
+    restart: unless-stopped
+    container_name: nextcloud_app
+    hostname: 'nextcloud.pgorzynski.freeddns.org'
+    ports:
+      - 4000:80
+    expose:
+    - "80"
+    networks:
+      - monitoring
+    links:
+      - db
+    volumes:
+      - nextcloud:/var/www/html
+      # - /samba_shares:data
+    environment:
+      - MYSQL_PASSWORD="asdykR^%afsaf459ur"
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`nextcloud.pgorzynski.freeddns.org`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=production"

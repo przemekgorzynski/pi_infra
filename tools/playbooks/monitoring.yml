@@ -29,7 +29,7 @@
     - "{{ monitoring_directories[0] }}"
     - "{{ monitoring_directories[1] }}"
     - "{{ monitoring_directories[2] }}"
-  - name: Make monitoring directories rwx
+  - name: Make data directories rwx
     file:
       state: directory
       path: "{{ item }}"
@@ -37,8 +37,7 @@
       group: root
       mode: '0777'
     with_items:
-    - "{{ monitoring_directories[3] }}"
-    - "{{ monitoring_directories[4] }}"
+    - "{{ data_directories }}"
   - name: Create docker network {{ docker_network }}
     docker_network:
       name: "{{ docker_network }}"

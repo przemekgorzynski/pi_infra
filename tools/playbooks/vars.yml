@@ -1,15 +1,26 @@
-domain: pgorzynski.freeddns.org
+# DO NOT CHANGE ORDER OF EXISTING DIRECTORIES LISTS
+# IT IS USED IN CODE - {{ data_directories[1] }}
+domain: gorillabay.org
 docker_network: tooling
 traefik_container_name: traefik
 traefik_directory: /tooling/traefik
 traefik_log_dir: /var/log/traefik
 
+################################
+data_directories:
+- /samba_shares/tooling/nextcloud
+- /samba_shares/tooling/nextcloud/db
+- /samba_shares/tooling/nextcloud/data
+- /samba_shares/tooling/prometheus
+- /samba_shares/tooling/prometheus/data
+- /samba_shares/tooling/grafana
+- /samba_shares/tooling/grafana/data
+
+############################################## 
 monitoring_directories:
 - /tooling/monitoring/prometheus_node_exporter  #r-x
 - /tooling/monitoring/prometheus_grafana        #r-x
 - /tooling/monitoring/prometheus_grafana/prometheus_config  #r-x
-- /tooling/monitoring/prometheus_grafana/prometheus_data    #rwx
-- /tooling/monitoring/prometheus_grafana/grafana_data    #rwx
 prometheus_node_exporter_image: quay.io/prometheus/node-exporter:latest
 prometheus_node_exporter_container_name: node_exporter
 prometheus_node_exporter_host_port: 9100
@@ -24,3 +35,14 @@ grafana_image: grafana/grafana:latest
 grafana_container_name: grafana
 grafana_host_port: 3000
 grafana_container_port: 3000
+
+##############################################
+nextcloud_directory: /tooling/nextcloud
+
+nextcloud_db_image: mariadb:10.6
+nextcloud_db_container_name: nextcloud_db
+
+nextcloud_app_image: nextcloud
+nextcloud_app_container_name: nextcloud_app
+nextcloud_host_port: 4000
+nextcloud_container_port: 80

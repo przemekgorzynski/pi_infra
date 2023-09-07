@@ -1,0 +1,77 @@
+---
+- name: PRE-CONFIG
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+
+  vars_files:
+  - vars.yml
+
+  tasks:
+  - name: check connectivity
+    ping:
+  - name: Update system
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      autoremove: yes
+  - name: Make nextcloud directories r-x
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: root
+      group: root
+      mode: '0755'
+    with_items:
+    - "{{ nextcloud_directory }}"
+  - name: Make data directories rwx
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: root
+      group: root
+      mode: '0777'
+    with_items:
+    - "{{ data_directories }}"
+  - name: Create docker network {{ docker_network }}
+    docker_network:
+      name: "{{ docker_network }}"
+
+- name: NEXTCLOUD CONFIGURATION
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+  
+  vars_files:
+  -  ../../vault.yml
+  - vars.yml
+
+  tasks:
+  - name: Copy nextcloud docker-compose file
+    template:
+      src: ../templates/nextcloud/nextcloud.j2
+      dest: "{{ nextcloud_directory }}/docker-compose.yml"
+      owner: root
+      group: root
+      mode: '0660'
+  - name: Start Nextcloud
+    ansible.builtin.shell:
+      cmd: docker-compose up -d 
+      chdir: "{{ nextcloud_directory }}"
+  - name: Get {{ nextcloud_app_image }} container info
+    docker_container_info:
+      name: "{{ nextcloud_app_image }}"
+    register: result
+  - name: Print the status of the {{ nextcloud_app_image }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
+        Started: {{ result.container['State']['StartedAt'] }}
+        ExitCode: {{ result.container['State']['ExitCode'] }}
+        Error: {{ result.container['State']['Error'] }}
+    when: result.exists

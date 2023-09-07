@@ -15,7 +15,7 @@ services:
       - {{ prometheus_host_port }}:{{ prometheus_container_port }}
     volumes:
       - {{ monitoring_directories[2] }}:/etc/prometheus
-      - {{ monitoring_directories[3] }}:/prometheus
+      - {{ data_directories[4] }}:/prometheus
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -28,7 +28,7 @@ services:
     networks:
       - {{ docker_network }}
     volumes:
-      - "{{ monitoring_directories[4] }}:/var/lib/grafana:rw"
+      - "{{ data_directories[6] }}:/var/lib/grafana:rw"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

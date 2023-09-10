@@ -64,11 +64,11 @@
     ansible.builtin.shell:
       cmd: docker-compose up -d 
       chdir: "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
-  - name: Get {{ nextcloud_app_image }} container info
+  - name: Get {{ nextcloud_app_container_name }} container info
     docker_container_info:
-      name: "{{ nextcloud_app_image }}"
+      name: "{{ nextcloud_app_container_name }}"
     register: result
-  - name: Print the status of the {{ nextcloud_app_image }} container
+  - name: Print the status of the {{ nextcloud_app_container_name }} container
     debug:
       msg: |
         State: {{ result.container['State']['Status'] }}

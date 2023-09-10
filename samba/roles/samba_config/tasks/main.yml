@@ -142,8 +142,11 @@
   
 - name: set rsync cron task
   ansible.builtin.cron:
-    name: "samba rsync"
-    special_time: reboot
+    name: "samba rsync {{ item }}"
+    special_time: "{{ item }}"
     job: "{{ samba_rsync_file_path }} 2>&1"
+  with_items:
+    - reboot
+    - hourly
   tags:
     - cron

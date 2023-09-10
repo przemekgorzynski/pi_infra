@@ -24,7 +24,7 @@
       path: "{{ tooling_direcotry }}"
       owner: root
       group: root
-      mode: '0750'
+      mode: '0770'
   - name: Make nextcloud directories
     file:
       state: directory
@@ -76,11 +76,11 @@
         ExitCode: {{ result.container['State']['ExitCode'] }}
         Error: {{ result.container['State']['Error'] }}
     when: result.exists
-  # - name: Update config.php file - add trusted domain
-  #   ansible.builtin.blockinfile:
-  #     path: " {{ data_directories[2] }}/config/config.php "
-  #     backup: true
-  #     insertafter: 0 => '192.168.0.61:4000',
-  #     block: |
-  #       1 => 'nextcloud.{{ domain }}',
+  - name: Update config.php file - add trusted domain
+    ansible.builtin.blockinfile:
+      path: "{{ data_directories[2] }}/config/config.php"
+      backup: true
+      insertafter: 0 => '192.168.0.61:4000',
+      block: |
+        1 => 'nextcloud.{{ domain }}',
 

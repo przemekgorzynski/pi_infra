@@ -3,7 +3,8 @@
 domain: gorillabay.org
 docker_network: tooling
 traefik_container_name: traefik
-traefik_directory: /tooling/traefik
+tooling_direcotry: /tooling
+traefik_directory: traefik
 traefik_log_dir: /var/log/traefik
 
 ################################
@@ -18,9 +19,9 @@ data_directories:
 
 ############################################## 
 monitoring_directories:
-- /tooling/monitoring/prometheus_node_exporter  #r-x
-- /tooling/monitoring/prometheus_grafana        #r-x
-- /tooling/monitoring/prometheus_grafana/prometheus_config  #r-x
+- monitoring/prometheus_node_exporter
+- monitoring/prometheus_grafana
+- monitoring/prometheus_grafana/prometheus_config
 prometheus_node_exporter_image: quay.io/prometheus/node-exporter:latest
 prometheus_node_exporter_container_name: node_exporter
 prometheus_node_exporter_host_port: 9100
@@ -37,7 +38,7 @@ grafana_host_port: 3000
 grafana_container_port: 3000
 
 ##############################################
-nextcloud_directory: /tooling/nextcloud
+nextcloud_directory: nextcloud
 
 nextcloud_db_image: mariadb:10.6
 nextcloud_db_container_name: nextcloud_db

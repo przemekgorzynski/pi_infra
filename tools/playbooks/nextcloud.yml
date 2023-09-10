@@ -18,24 +18,25 @@
       state: latest
       update_cache: yes
       autoremove: yes
-  - name: Make nextcloud directories r-x
+  - name: Make tooling direcotry
+    file:
+      state: directory
+      path: "{{ tooling_direcotry }}"
+      owner: root
+      group: root
+      mode: '0750'
+  - name: Make nextcloud directories
     file:
       state: directory
       path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '0755'
+      owner: www-data
+      group: www-data
+      mode: '2770'  #guid
     with_items:
-    - "{{ nextcloud_directory }}"
-  - name: Make data directories rwx
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '0777'
-    with_items:
-    - "{{ data_directories }}"
+    - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+    - "{{ data_directories[0] }}"
+    - "{{ data_directories[1] }}"
+    - "{{ data_directories[2] }}"
   - name: Create docker network {{ docker_network }}
     docker_network:
       name: "{{ docker_network }}"
@@ -55,14 +56,14 @@
   - name: Copy nextcloud docker-compose file
     template:
       src: ../templates/nextcloud/nextcloud.j2
-      dest: "{{ nextcloud_directory }}/docker-compose.yml"
+      dest: "{{ tooling_direcotry }}/{{ nextcloud_directory }}/docker-compose.yml"
       owner: root
       group: root
-      mode: '0660'
+      mode: '0750'
   - name: Start Nextcloud
     ansible.builtin.shell:
       cmd: docker-compose up -d 
-      chdir: "{{ nextcloud_directory }}"
+      chdir: "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
   - name: Get {{ nextcloud_app_image }} container info
     docker_container_info:
       name: "{{ nextcloud_app_image }}"
@@ -75,3 +76,11 @@
         ExitCode: {{ result.container['State']['ExitCode'] }}
         Error: {{ result.container['State']['Error'] }}
     when: result.exists
+  # - name: Update config.php file - add trusted domain
+  #   ansible.builtin.blockinfile:
+  #     path: " {{ data_directories[2] }}/config/config.php "
+  #     backup: true
+  #     insertafter: 0 => '192.168.0.61:4000',
+  #     block: |
+  #       1 => 'nextcloud.{{ domain }}',
+

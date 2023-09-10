@@ -27,11 +27,18 @@
       path: "{{ traefik_log_dir }}/traefik.log"
       owner: root
       group: root
-      mode: '0644'
+      mode: '0740'
+  - name: Make tooling direcotry
+    file:
+      state: directory
+      path: "{{ tooling_direcotry }}"
+      owner: root
+      group: root
+      mode: '0750'
   - name: Make traefik directories
     file:
       state: directory
-      path: "{{ traefik_directory }}"
+      path: "{{ tooling_direcotry }}/{{ traefik_directory }}"
       owner: root
       group: root
       mode: '0644'
@@ -52,14 +59,14 @@
   - name: Copy traefik docker-compose file
     template:
       src: ../templates/traefik/traefik.j2
-      dest: /tooling/traefik/docker-compose.yml
+      dest: "{{ tooling_direcotry }}/{{ traefik_directory }}/docker-compose.yml"
       owner: root
       group: root
       mode: '0660'
   - name: Start traefik
     ansible.builtin.shell:
       cmd: docker-compose up -d 
-      chdir: "{{ traefik_directory}}"
+      chdir: "{{ tooling_direcotry }}/{{ traefik_directory }}"
   - name: Get {{ traefik_container_name }} container info
     docker_container_info:
       name: "{{ traefik_container_name }}"

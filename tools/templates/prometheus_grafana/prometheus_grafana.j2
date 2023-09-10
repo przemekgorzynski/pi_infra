@@ -14,7 +14,7 @@ services:
     ports:
       - {{ prometheus_host_port }}:{{ prometheus_container_port }}
     volumes:
-      - {{ monitoring_directories[2] }}:/etc/prometheus
+      - {{ tooling_direcotry }}/{{ monitoring_directories[2] }}:/etc/prometheus
       - {{ data_directories[4] }}:/prometheus
     restart: unless-stopped
     command:

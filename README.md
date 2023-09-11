@@ -1,7 +1,7 @@
 # Local inftarstructure built on raspbery pi.
 Infrastructure include:
 - samba server
-- monitoring server
+- tools
 
 
 ### Base config 
@@ -12,7 +12,15 @@ https://github.com/przemekgorzynski/pi_infra/blob/master/docs/base_config.md
 Should run against raspberry pi module decidated for samba server
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/samba.md
 
-### Monitoring
-Metric collector should run against every raspberry pi module within infrastructure
-Monitoring server should run against pi module dedicates for monitoring server
+### Tooling
+Stacks are docker-compose based and deployed using ansible playbooks.
+Following tools are included:
+- monitoring stack - prometheus and grafana
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/monitoring.md
+- Nextcloud instance
+https://github.com/przemekgorzynski/pi_infra/blob/master/docs/nextcloud.md
+
+Example of nexcloud deployment command.
+```
+ansible-playbook -i ../../inventory nextcloud.yml --vault-pass-file ~/vault_pass
+```

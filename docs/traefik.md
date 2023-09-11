@@ -17,7 +17,7 @@ Compatible DNS providers and it's variables: <br>
 https://doc.traefik.io/traefik/https/acme/
 
 
-Certificates are stored in docker storage:
+Certificates are stored in docker volume:
 
 ```
 /var/lib/docker/volumes/traefik_traefik-ssl-certs/_data/acme.json
@@ -28,7 +28,7 @@ Deployment of traefik:
 ansible-playbook -i ../../inventory traefik.yml --vault-pass-file ~/vault_pass
 ```
 
-To enable traffic routing following tags should be applied on servoce container (nextcloud in this example)
+To enable traffic routing following tags should be applied on container (nextcloud in this example)
 
 ```
 labels:

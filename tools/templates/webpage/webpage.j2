@@ -1,0 +1,20 @@
+version: '3.8'
+networks: 
+  {{ docker_network }}:
+    external: true
+    driver: bridge
+
+services:
+  webpage:
+    image: {{ webpage_image }}:{{ webpage_image_version }}
+    container_name: {{ webpage_container_name }}
+    networks:
+      - {{ docker_network }}
+    ports:
+      - {{ webpage_host_port }}:{{ webpage_container_port }}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webpage.rule=Host(`{{ domain }}`)"
+      - "traefik.http.routers.webpage.entrypoints=websecure"
+      - "traefik.http.routers.webpage.tls.certresolver=production"

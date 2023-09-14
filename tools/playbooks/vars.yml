@@ -47,3 +47,11 @@ nextcloud_app_image: nextcloud
 nextcloud_app_container_name: nextcloud_app
 nextcloud_host_port: 4000
 nextcloud_container_port: 80
+
+##############################################
+webpage_directory: webpage
+webpage_image: pgorzynski/gorillabay-webpage
+webpage_image_version: 22
+webpage_container_name: webpage
+webpage_host_port: 8082
+webpage_container_port: 80

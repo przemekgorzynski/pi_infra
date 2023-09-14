@@ -9,6 +9,10 @@
   vars_files:
   - vars.yml
 
+  pre_tasks:
+  - name: check connectivity
+    ping:
+
   tasks:
   - name: check connectivity
     ping:

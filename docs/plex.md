@@ -1,1 +1,3 @@
-## In development
+```
+ansible-playbook -i ../../inventory plex.yml
+```

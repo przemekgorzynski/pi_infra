@@ -1,0 +1,32 @@
+version: '3.8'
+
+networks: 
+  {{ docker_network }}:
+    external: true
+    driver: bridge
+
+services:
+  plex:
+    image: {{ plex_image }} 
+    container_name: {{ plex_container_name }}
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Warsaw
+      - PLEX_CLAIM={{ plex_claim }}
+      - VERSION=docker
+    networks:
+      - tooling
+    ports:
+      {{ plex_ports }}
+    volumes:
+      - {{ data_directories[8] }}:/config
+      - {{ plex_source_dirs[0] }}:/media
+      - {{ plex_source_dirs[1] }}:/media_priv
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.rule=Host(`plex.{{ domain }}`)"
+      - "traefik.http.routers.plex.entrypoints=websecure"
+      - "traefik.http.routers.plex.tls.certresolver=production"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"

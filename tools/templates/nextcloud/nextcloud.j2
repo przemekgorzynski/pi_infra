@@ -7,7 +7,7 @@ networks:
 
 services:
   db:
-    image: {{ nextcloud_db_image }}
+    image: {{ nextcloud_db_image }}:{{ nextcloud_image_tag }}
     restart: unless-stopped
     container_name: {{ nextcloud_db_container_name }}
     networks:

@@ -41,6 +41,7 @@ grafana_container_port: 3000
 
 ##############################################
 nextcloud_directory: nextcloud
+nextcloud_image_tag: 27.1.2
 
 nextcloud_db_image: mariadb:10.6
 nextcloud_db_container_name: nextcloud_db

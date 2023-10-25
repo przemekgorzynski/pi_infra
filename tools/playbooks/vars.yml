@@ -54,7 +54,7 @@ nextcloud_container_port: 80
 ##############################################
 webpage_directory: webpage
 webpage_image: pgorzynski/gorillabay-webpage
-webpage_image_version: 28
+webpage_image_version: 31
 webpage_container_name: webpage
 webpage_host_port: 8082
 webpage_container_port: 80

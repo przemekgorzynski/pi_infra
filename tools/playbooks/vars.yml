@@ -41,7 +41,7 @@ grafana_container_port: 3000
 
 ##############################################
 nextcloud_directory: nextcloud
-nextcloud_image_tag: 27.1.2
+nextcloud_image_tag: 27.1.3
 
 nextcloud_db_image: mariadb:10.6
 nextcloud_db_container_name: nextcloud_db
@@ -62,7 +62,7 @@ webpage_container_port: 80
 ##############################################
 plex_directory: plex
 
-plex_image: lscr.io/linuxserver/plex:latest
+plex_image: lscr.io/linuxserver/plex:1.32.7
 plex_container_name: plex
 plex_claim: claim-Jmvy2YZRqoWaqDZduyzu
 

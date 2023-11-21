@@ -7,7 +7,7 @@ networks:
 
 services:
   db:
-    image: {{ nextcloud_db_image }}:{{ nextcloud_image_tag }}
+    image: {{ nextcloud_db_image }}
     restart: unless-stopped
     container_name: {{ nextcloud_db_container_name }}
     networks:
@@ -22,7 +22,7 @@ services:
       - MYSQL_USER={{ NEXTCLOUD_MYSQL_USER }}
 
   app:
-    image: {{ nextcloud_app_image }}
+    image: {{ nextcloud_app_image }}:{{ nextcloud_image_tag }}
     restart: unless-stopped
     container_name: {{ nextcloud_app_container_name }}
     hostname: 'nextcloud.{{ domain }}'

@@ -38,3 +38,18 @@ labels:
   - "traefik.http.routers.nextcloud.tls.certresolver=production"
 ```
 
+
+## Certs rotation
+- stop traefik docker compose 
+```
+docker-compose down
+```
+- OPTIONAL - remove existing ACME file 
+```
+rm /var/lib/docker/volumes/traefik_traefik-ssl-certs/_data/acme.json
+```
+- start docker-compose
+```
+docker-compose up-d
+```
+After few minutes new certification should be present

@@ -1,0 +1,59 @@
+---
+- name: Jellyfin config
+  hosts: all
+  gather_facts: yes
+  user: przemek
+  become: yes
+  become_user: root
+
+  vars_files:
+  - vars.yml
+
+  pre_tasks:
+  - name: check connectivity
+    ping:
+
+  tasks:
+  - name: Update system
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      autoremove: yes
+  - name: Make tooling direcotry
+    file:
+      state: directory
+      path: "{{ tooling_direcotry }}"
+      owner: root
+      group: root
+      mode: '0750'
+  - name: Make jellyfin directory
+    file:
+      state: directory
+      path: "{{ tooling_direcotry }}/{{ jellyfin_directory }}"
+      owner: root
+      group: root
+      mode: '0750'
+  - name: Create docker network {{ docker_network }}
+    docker_network:
+      name: "{{ docker_network }}"
+  - name: Copy jellyfin docker-compose file
+    template:
+      src: ../templates/jellyfin/jellyfin.j2
+      dest: "{{ tooling_direcotry }}/{{ jellyfin_directory }}/docker-compose.yml"
+      owner: root
+      group: root
+      mode: '0750'
+  - name: Start jellyfin container
+    ansible.builtin.shell:
+      cmd: docker-compose up -d 
+      chdir: "{{ tooling_direcotry }}/{{ jellyfin_directory }}"
+  - name: Get {{ jellyfin_container_name }} container info
+    docker_container_info:
+      name: "{{ jellyfin_container_name }}"
+    register: result
+  - name: Print the status of the {{ jellyfin_container_name }} container
+    debug:
+      msg: |
+        State: {{ result.container['State']['Status'] }}
+    when: result.exists

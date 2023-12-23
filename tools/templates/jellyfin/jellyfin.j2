@@ -1,0 +1,33 @@
+version: '3.8'
+
+networks: 
+  {{ docker_network }}:
+    external: true
+    driver: bridge
+
+services:
+  jellyfin:
+    image: {{ jellyfin_image }}
+    container_name: {{ jellyfin_container_name }}
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Warsaw
+    networks:
+      - tooling
+    ports:
+      {{ jellyfin_ports }}
+    volumes:
+      - {{ data_directories[10] }}:/config
+      - {{ jellyfin_source_dirs[0] }}:/media
+      - {{ jellyfin_source_dirs[1] }}:/media_priv
+    devices:
+      - /dev/video10:/dev/video10
+      - /dev/video11:/dev/video11
+      - /dev/video12:/dev/video12
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ domain }}`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.tls.certresolver=production"

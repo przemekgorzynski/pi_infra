@@ -18,6 +18,8 @@ data_directories:
 - /samba_shares/tooling/grafana/data
 - /samba_shares/tooling/plex
 - /samba_shares/tooling/plex/config
+- /samba_shares/tooling/jellyfin
+- /samba_shares/tooling/jellyfin/config
 
 ############################################## 
 monitoring_directories:
@@ -79,5 +81,18 @@ plex_ports:
 - 32414:32414/udp
 
 plex_source_dirs:
+- /samba_shares/filmy
+- /samba_shares_backup/new
+
+##############################################
+jellyfin_directory: jellyfin
+
+jellyfin_image: lscr.io/linuxserver/jellyfin:latest
+jellyfin_container_name: jellyfin
+
+jellyfin_ports:
+- 8096:8096
+
+jellyfin_source_dirs:
 - /samba_shares/filmy
 - /samba_shares_backup/new

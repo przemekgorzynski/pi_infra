@@ -1,157 +1,157 @@
 ---
 - name: PRE-CONFIG
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
 
   vars_files:
-  - vars.yml
+    - vars.yml
 
   pre_tasks:
-  - name: check connectivity
-    ping:
+    - name: check connectivity
+      ping: samba
 
   tasks:
-  - name: check connectivity
-    ping:
-  - name: Update system
-    apt:
-      name: "*"
-      state: latest
-      update_cache: yes
-      autoremove: yes
-  - name: Make tooling direcotry
-    file:
-      state: directory
-      path: "{{ tooling_direcotry }}"
-      owner: root
-      group: root
-      mode: '0750'
-  - name: Make directories with permission 2770
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '2770'
-    with_items:
-    - "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}"
-    - "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}"
-    - "{{ data_directories[3] }}"
-    - "{{ data_directories[5] }}"
-    - "{{ data_directories[6] }}"
-  - name: Make directories with permission 2775
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '2775'
-    with_items:
-    - "{{ tooling_direcotry }}/{{ monitoring_directories[2] }}"
-  - name: Make directories with permission 2777
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: root
-      group: root
-      mode: '2777'
-    with_items:
-    - "{{ data_directories[4] }}"
-  - name: Create docker network {{ docker_network }}
-    docker_network:
-      name: "{{ docker_network }}"
+    - name: check connectivity
+      ping: samba
+    - name: Update system
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        autoremove: yes
+    - name: Make tooling direcotry
+      file:
+        state: directory
+        path: "{{ tooling_direcotry }}"
+        owner: root
+        group: root
+        mode: '0750'
+    - name: Make directories with permission 2770
+      file:
+        state: directory
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: '2770'
+      with_items:
+        - "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}"
+        - "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}"
+        - "{{ data_directories[3] }}"
+        - "{{ data_directories[5] }}"
+        - "{{ data_directories[6] }}"
+    - name: Make directories with permission 2775
+      file:
+        state: directory
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: '2775'
+      with_items:
+        - "{{ tooling_direcotry }}/{{ monitoring_directories[2] }}"
+    - name: Make directories with permission 2777
+      file:
+        state: directory
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: '2777'
+      with_items:
+        - "{{ data_directories[4] }}"
+    - name: Create docker network {{ docker_network }}
+      docker_network:
+        name: "{{ docker_network }}"
 
 - name: PROMETHEUS NODE EXPORTER
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
-  
+
   vars_files:
-  -  ../../vault.yml
-  - vars.yml
+    - ../../vault.yml
+    - vars.yml
 
   tasks:
-  - name: Copy prmetheus node-exporter docker-compose file
-    template:
-      src: ../templates/prometheus_node_exporter/prometheus_node_exporter.j2
-      dest: "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}/docker-compose.yml"
-      owner: root
-      group: root
-      mode: '0750'
-  - name: Start node exporter
-    ansible.builtin.shell:
-      cmd: docker-compose up -d 
-      chdir: "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}"
-  - name: Get {{ prometheus_node_exporter_container_name }} container info
-    docker_container_info:
-      name: "{{ prometheus_node_exporter_container_name }}"
-    register: result
-  - name: Print the status of the {{ prometheus_node_exporter_container_name }} container
-    debug:
-      msg: |
-        State: {{ result.container['State']['Status'] }}
-        Started: {{ result.container['State']['StartedAt'] }}
-        ExitCode: {{ result.container['State']['ExitCode'] }}
-        Error: {{ result.container['State']['Error'] }}
-    when: result.exists
+    - name: Copy prmetheus node-exporter docker-compose file
+      template:
+        src: ../templates/prometheus_node_exporter/prometheus_node_exporter.j2
+        dest: "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}/docker-compose.yml"
+        owner: root
+        group: root
+        mode: '0750'
+    - name: Start node exporter
+      ansible.builtin.shell:
+        cmd: docker-compose up -d
+        chdir: "{{ tooling_direcotry }}/{{ monitoring_directories[0] }}"
+    - name: Get {{ prometheus_node_exporter_container_name }} container info
+      docker_container_info:
+        name: "{{ prometheus_node_exporter_container_name }}"
+      register: result
+    - name: Print the status of the {{ prometheus_node_exporter_container_name }} container
+      debug:
+        msg: |
+          State: {{ result.container['State']['Status'] }}
+          Started: {{ result.container['State']['StartedAt'] }}
+          ExitCode: {{ result.container['State']['ExitCode'] }}
+          Error: {{ result.container['State']['Error'] }}
+      when: result.exists
 
 - name: PROMETHEUS & GRAFANA CONFIG
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
-  
+
   vars_files:
-  -  ../../vault.yml
-  - vars.yml
+    - ../../vault.yml
+    - vars.yml
 
   tasks:
-  - name: Copy Prometheus config file
-    copy:
-      src: ../templates/prometheus_grafana/prometheus.yml
-      dest: "{{ tooling_direcotry }}/{{ monitoring_directories[2] }}/prometheus.yml"
-      owner: root
-      group: root
-      mode: '2775'
-  - name: Copy Grafana Dashboard
-    copy:
-      src: ../templates/prometheus_grafana/grafana_dashboard.json
-      dest: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}/grafana_dashboard.json"
-      owner: root
-      group: root
-      mode: '0644'
-  - name: Copy P&G stack docker-compose file
-    template:
-      src: ../templates/prometheus_grafana/prometheus_grafana.j2
-      dest: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}/docker-compose.yml"
-      owner: root
-      group: root
-      mode: '0644'
-  - name: Start P&G docker-compose
-    ansible.builtin.shell:
-      cmd: docker-compose up -d 
-      chdir: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}"
-  - name: Get {{ prometheus_container_name }} container info
-    docker_container_info:
-      name: "{{ prometheus_container_name }}"
-    register: result
-  - name: Print the status of the {{ prometheus_container_name }} container
-    debug:
-      msg: |
-        State: {{ result.container['State']['Status'] }}
-    when: result.exists
-  - name: Get {{ grafana_container_name }} container info
-    docker_container_info:
-      name: "{{ grafana_container_name }}"
-    register: result
-  - name: Print the status of the {{ grafana_container_name }} container
-    debug:
-      msg: |
-        State: {{ result.container['State']['Status'] }}
-    when: result.exists
+    - name: Copy Prometheus config file
+      copy:
+        src: ../templates/prometheus_grafana/prometheus.yml
+        dest: "{{ tooling_direcotry }}/{{ monitoring_directories[2] }}/prometheus.yml"
+        owner: root
+        group: root
+        mode: '2775'
+    - name: Copy Grafana Dashboard
+      copy:
+        src: ../templates/prometheus_grafana/grafana_dashboard.json
+        dest: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}/grafana_dashboard.json"
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Copy P&G stack docker-compose file
+      template:
+        src: ../templates/prometheus_grafana/prometheus_grafana.j2
+        dest: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}/docker-compose.yml"
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Start P&G docker-compose
+      ansible.builtin.shell:
+        cmd: docker-compose up -d
+        chdir: "{{ tooling_direcotry }}/{{ monitoring_directories[1] }}"
+    - name: Get {{ prometheus_container_name }} container info
+      docker_container_info:
+        name: "{{ prometheus_container_name }}"
+      register: result
+    - name: Print the status of the {{ prometheus_container_name }} container
+      debug:
+        msg: |
+          State: {{ result.container['State']['Status'] }}
+      when: result.exists
+    - name: Get {{ grafana_container_name }} container info
+      docker_container_info:
+        name: "{{ grafana_container_name }}"
+      register: result
+    - name: Print the status of the {{ grafana_container_name }} container
+      debug:
+        msg: |
+          State: {{ result.container['State']['Status'] }}
+      when: result.exists

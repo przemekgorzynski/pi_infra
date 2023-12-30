@@ -1,9 +1,9 @@
 ---
 - name: Webpage config
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
 
   vars_files:
@@ -46,7 +46,7 @@
         mode: '0660'
     - name: Start webpage container
       ansible.builtin.shell:
-        cmd: docker-compose up -d 
+        cmd: docker-compose up -d
         chdir: "{{ tooling_direcotry }}/{{ webpage_directory }}"
     - name: Get {{ webpage_container_name }} container info
       docker_container_info:

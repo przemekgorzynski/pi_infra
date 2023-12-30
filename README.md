@@ -1,4 +1,10 @@
 # Local inftarstructure built on raspbery pi.
+[![YAMLLINT](https://github.com/przemekgorzynski/pi_infra/actions/workflows/yamllint.yml/badge.svg)](https://github.com/przemekgorzynski/pi_infra/actions/workflows/yamllint.yml)
+
+![setup](./docs/image.jpg)
+
+HDD case 3D=printed from https://www.thingiverse.com/thing:3850735
+
 Infrastructure include:
 - samba server
 - tools

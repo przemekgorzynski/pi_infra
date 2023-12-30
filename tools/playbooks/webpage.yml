@@ -7,53 +7,53 @@
   become_user: root
 
   vars_files:
-  - vars.yml
+    - vars.yml
 
   pre_tasks:
-  - name: check connectivity
-    ping:
+    - name: check connectivity
+      ping: samba
 
   tasks:
-  - name: Update system
-    apt:
-      name: "*"
-      state: latest
-      update_cache: yes
-      autoremove: yes
-  - name: Make tooling direcotry
-    file:
-      state: directory
-      path: "{{ tooling_direcotry }}"
-      owner: root
-      group: root
-      mode: '0750'
-  - name: Make webpage directory
-    file:
-      state: directory
-      path: "{{ tooling_direcotry }}/{{ webpage_directory }}"
-      owner: root
-      group: root
-      mode: '0644'
-  - name: Create docker network {{ docker_network }}
-    docker_network:
-      name: "{{ docker_network }}"
-  - name: Copy webpage docker-compose file
-    template:
-      src: ../templates/webpage/webpage.j2
-      dest: "{{ tooling_direcotry }}/{{ webpage_directory }}/docker-compose.yml"
-      owner: root
-      group: root
-      mode: '0660'
-  - name: Start webpage container
-    ansible.builtin.shell:
-      cmd: docker-compose up -d 
-      chdir: "{{ tooling_direcotry }}/{{ webpage_directory }}"
-  - name: Get {{ webpage_container_name }} container info
-    docker_container_info:
-      name: "{{ webpage_container_name }}"
-    register: result
-  - name: Print the status of the {{ webpage_container_name }} container
-    debug:
-      msg: |
-        State: {{ result.container['State']['Status'] }}
-    when: result.exists
+    - name: Update system
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        autoremove: yes
+    - name: Make tooling direcotry
+      file:
+        state: directory
+        path: "{{ tooling_direcotry }}"
+        owner: root
+        group: root
+        mode: '0750'
+    - name: Make webpage directory
+      file:
+        state: directory
+        path: "{{ tooling_direcotry }}/{{ webpage_directory }}"
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Create docker network {{ docker_network }}
+      docker_network:
+        name: "{{ docker_network }}"
+    - name: Copy webpage docker-compose file
+      template:
+        src: ../templates/webpage/webpage.j2
+        dest: "{{ tooling_direcotry }}/{{ webpage_directory }}/docker-compose.yml"
+        owner: root
+        group: root
+        mode: '0660'
+    - name: Start webpage container
+      ansible.builtin.shell:
+        cmd: docker-compose up -d 
+        chdir: "{{ tooling_direcotry }}/{{ webpage_directory }}"
+    - name: Get {{ webpage_container_name }} container info
+      docker_container_info:
+        name: "{{ webpage_container_name }}"
+      register: result
+    - name: Print the status of the {{ webpage_container_name }} container
+      debug:
+        msg: |
+          State: {{ result.container['State']['Status'] }}
+      when: result.exists

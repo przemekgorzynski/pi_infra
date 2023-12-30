@@ -3,23 +3,23 @@
   apt:
     name: "*"
     state: latest
-    update_cache: yes
-    autoremove: yes
+    update_cache: true
+    autoremove: true
   tags:
-   - os_config
+    - os_config
 
 - name: Install OS packages
   apt:
     name: "{{ packages }}"
     state: present
   tags:
-   - os_config
+    - os_config
 
 - name: Set hostname
   hostname:
     name: "{{ inventory_hostname }}"
   tags:
-   - os_config
+    - os_config
 
 - name: Update /etc/hosts
   blockinfile:
@@ -29,7 +29,7 @@
       {{ hostvars[host].ansible_host }} {{ host }}
       {% endfor %}
   tags:
-   - os_config
+    - os_config
 
 - name: Update MOTD messages
   block:
@@ -44,7 +44,7 @@
       copy:
         content: ""
         dest: /etc/motd
-       
+
 - name: Set timezone to Europe/Warsaw
   shell: sudo timedatectl set-timezone "Europe/Warsaw"
 

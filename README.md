@@ -27,7 +27,7 @@ https://github.com/przemekgorzynski/pi_infra/blob/master/docs/traefik.md </br>
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/monitoring.md </br>
 - Nextcloud instance </br>
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/nextcloud.md </br>
-- Plex </br>
-https://github.com/przemekgorzynski/pi_infra/blob/master/docs/plex.md </br>
+- Jellyfin </br>
+https://github.com/przemekgorzynski/pi_infra/blob/master/docs/jellyfin.md </br>
 - Jenkins</br>
 https://github.com/przemekgorzynski/pi_infra/blob/master/docs/jenkins.md </br>

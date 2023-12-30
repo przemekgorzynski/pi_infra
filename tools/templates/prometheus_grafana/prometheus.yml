@@ -1,4 +1,5 @@
 # copy this file into /monitoring/prometheus_config
+---
 global:
   scrape_interval: 1m
   scrape_timeout: 30s
@@ -14,4 +15,4 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-        - '10.0.0.10:9100'    # SAMBA
+          - '10.0.0.10:9100'    # SAMBA

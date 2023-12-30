@@ -3,33 +3,33 @@
   apt:
     name: "*"
     state: latest
-    update_cache: yes
-    autoremove: yes
+    update_cache: true
+    autoremove: true
   tags:
-   - samba_config
+    - samba_config
 
 - name: Install Samba packages
   apt:
     name: "{{ packages }}"
     state: present
   tags:
-   - samba_config
+    - samba_config
 
 - name: Create samba read_only user
   ansible.builtin.user:
     name: "{{ item.name }}"
     password: "{{ item.password | password_hash('sha512') }}"
     state: present
-    shell:  "{{ item.shell }}"
+    shell: "{{ item.shell }}"
     groups: "{{ item.groups }}"
-    create_home: no
-  no_log: True
+    create_home: true
+  no_log: true
   loop:
-     - { name: 'ro', password: "{{ ro_pass }}", groups: 'users', shell: '/bin/false' }
+    - {name: 'ro', password: "{{ ro_pass }}", groups: 'users', shell: '/bin/false'}
   tags:
-   - samba_config
+    - samba_config
 
-- name: Create Samba shares 
+- name: Create Samba shares
   file:
     state: directory
     path: "{{ item }}"
@@ -40,7 +40,7 @@
     - "{{ samba_shares_root_dir }}"
     - "{{ backup_samba_shares_root_dir }}"
   tags:
-   - samba_config
+    - samba_config
 
 - name: mount Hard Drive for Samba
   mount:
@@ -50,7 +50,7 @@
     fstype: ext4
     opts: defaults,nofail
   tags:
-   - samba_config
+    - samba_config
 
 - name: mount Backup Hard Drive for Samba
   mount:
@@ -60,12 +60,12 @@
     fstype: ext4
     opts: defaults,nofail
   tags:
-   - samba_config
+    - samba_config
 
 - name: Refrest mount drives
   shell: mount -a
   tags:
-   - samba_config
+    - samba_config
 
 - name: Create share directories
   file:
@@ -76,7 +76,7 @@
     mode: '2770'
   with_items: "{{ samba_shares }}"
   tags:
-   - samba_config
+    - samba_config
 
 - name: Create share backup directories
   file:
@@ -87,7 +87,7 @@
     mode: '2770'
   with_items: "{{ samba_backup_shares }}"
   tags:
-   - samba_config
+    - samba_config
 
 - name: Copy Samba config file
   template:
@@ -97,28 +97,28 @@
     group: root
     mode: '0660'
   tags:
-   - samba_config
+    - samba_config
 
 - name: Restart samba
   service:
     name: smbd
     state: restarted
   tags:
-   - samba_config
+    - samba_config
 
 - name: Update samba password
   shell: |
     echo "{{ przemek_pass }}\n{{ przemek_pass }}" | smbpasswd -a przemek
     echo "{{ ro_pass }}\n{{ ro_pass }}" | smbpasswd -a ro
   tags:
-   - samba_config
+    - samba_config
 
 - name: UFW enable samba
   shell: ufw allow samba
   tags:
-   - samba_config
+    - samba_config
 
-- name: Create Rsync log file 
+- name: Create Rsync log file
   file:
     state: touch
     path: "{{ item }}"
@@ -128,7 +128,7 @@
   with_items:
     - "{{ samba_rsync_logfile }}"
   tags:
-   - samba_config
+    - samba_config
 
 - name: Copy Rsync script
   template:
@@ -138,15 +138,25 @@
     group: root
     mode: '0770'
   tags:
-   - rsync
-  
-- name: set rsync cron task
+    - rsync
+
+- name: set reboot rsync cron task
   ansible.builtin.cron:
-    name: "samba rsync {{ item }}"
+    name: "samba rsync at {{ item }}"
     special_time: "{{ item }}"
     job: "{{ samba_rsync_file_path }} 2>&1"
   with_items:
     - reboot
-    - hourly
+  tags:
+    - cron
+
+- name: set custom rsync cron task
+  ansible.builtin.cron:
+    name: "samba rsync at 6,18"
+    minute: "0"
+    hour: "6,18"
+    job: "{{ samba_rsync_file_path }} 2>&1"
+  with_items:
+    - reboot
   tags:
     - cron

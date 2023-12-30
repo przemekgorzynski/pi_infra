@@ -1,90 +1,89 @@
 ---
 - name: PRE-CONFIG
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
 
   vars_files:
-  - vars.yml
+    - vars.yml
 
   pre_tasks:
-  - name: check connectivity
-    ping:
+    - name: check connectivity
+      ping: samba
 
   tasks:
-  - name: check connectivity
-    ping:
-  - name: Update system
-    apt:
-      name: "*"
-      state: latest
-      update_cache: yes
-      autoremove: yes
-  - name: Make tooling direcotry
-    file:
-      state: directory
-      path: "{{ tooling_direcotry }}"
-      owner: root
-      group: root
-      mode: '0770'
-  - name: Make nextcloud directories
-    file:
-      state: directory
-      path: "{{ item }}"
-      owner: www-data
-      group: www-data
-      mode: '2770'  #guid
-    with_items:
-    - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
-    - "{{ data_directories[0] }}"
-    - "{{ data_directories[1] }}"
-    - "{{ data_directories[2] }}"
-  - name: Create docker network {{ docker_network }}
-    docker_network:
-      name: "{{ docker_network }}"
+    - name: check connectivity
+      ping: samba
+    - name: Update system
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        autoremove: yes
+    - name: Make tooling direcotry
+      file:
+        state: directory
+        path: "{{ tooling_direcotry }}"
+        owner: root
+        group: root
+        mode: '0770'
+    - name: Make nextcloud directories
+      file:
+        state: directory
+        path: "{{ item }}"
+        owner: www-data
+        group: www-data
+        mode: '2770'  #guid
+      with_items:
+        - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+        - "{{ data_directories[0] }}"
+        - "{{ data_directories[1] }}"
+        - "{{ data_directories[2] }}"
+    - name: Create docker network {{ docker_network }}
+      docker_network:
+        name: "{{ docker_network }}"
 
 - name: NEXTCLOUD CONFIGURATION
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
-  
+
   vars_files:
-  -  ../../vault.yml
-  - vars.yml
+    - ../../vault.yml
+    - vars.yml
 
   tasks:
-  - name: Copy nextcloud docker-compose file
-    template:
-      src: ../templates/nextcloud/nextcloud.j2
-      dest: "{{ tooling_direcotry }}/{{ nextcloud_directory }}/docker-compose.yml"
-      owner: root
-      group: root
-      mode: '0750'
-  - name: Start Nextcloud
-    ansible.builtin.shell:
-      cmd: docker-compose up -d 
-      chdir: "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
-  - name: Get {{ nextcloud_app_container_name }} container info
-    docker_container_info:
-      name: "{{ nextcloud_app_container_name }}"
-    register: result
-  - name: Print the status of the {{ nextcloud_app_container_name }} container
-    debug:
-      msg: |
-        State: {{ result.container['State']['Status'] }}
-        Started: {{ result.container['State']['StartedAt'] }}
-        ExitCode: {{ result.container['State']['ExitCode'] }}
-        Error: {{ result.container['State']['Error'] }}
-    when: result.exists
-  - name: Update config.php file - add trusted domain
-    ansible.builtin.blockinfile:
-      path: "{{ data_directories[2] }}/config/config.php"
-      backup: true
-      insertafter: 0 => '192.168.0.61:4000',
-      block: |
-        1 => 'nextcloud.{{ domain }}',
-
+    - name: Copy nextcloud docker-compose file
+      template:
+        src: ../templates/nextcloud/nextcloud.j2
+        dest: "{{ tooling_direcotry }}/{{ nextcloud_directory }}/docker-compose.yml"
+        owner: root
+        group: root
+        mode: '0750'
+    - name: Start Nextcloud
+      ansible.builtin.shell:
+        cmd: docker-compose up -d
+        chdir: "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+    - name: Get {{ nextcloud_app_container_name }} container info
+      docker_container_info:
+        name: "{{ nextcloud_app_container_name }}"
+      register: result
+    - name: Print the status of the {{ nextcloud_app_container_name }} container
+      debug:
+        msg: |
+          State: {{ result.container['State']['Status'] }}
+          Started: {{ result.container['State']['StartedAt'] }}
+          ExitCode: {{ result.container['State']['ExitCode'] }}
+          Error: {{ result.container['State']['Error'] }}
+      when: result.exists
+    - name: Update config.php file - add trusted domain
+      ansible.builtin.blockinfile:
+        path: "{{ data_directories[2] }}/config/config.php"
+        backup: true
+        insertafter: 0 => '192.168.0.61:4000',
+        block: |
+          1 => 'nextcloud.{{ domain }}',

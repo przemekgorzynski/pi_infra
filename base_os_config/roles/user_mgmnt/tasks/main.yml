@@ -11,22 +11,22 @@
     name: "{{ item.name }}"
     password: "{{ item.password | password_hash('sha512') }}"
     state: present
-    shell:  "{{ item.shell }}"
+    shell: "{{ item.shell }}"
     groups: "{{ item.groups }}"
-    create_home: yes
-  no_log: True
+    create_home: true
+  no_log: true
   loop:
-    - { name: 'przemek', password: "{{ przemek_pass }}", groups: 'users,sudo,admins,www-data', shell: '/bin/bash' }
+    - {name: 'przemek', password: "{{ przemek_pass }}", groups: 'users,sudo,admins,www-data', shell: '/bin/bash'}
   tags:
     - user_mgmnt
 
-- name: Update pi user - add to admin group and update password 
+- name: Update pi user - add to admin group and update password
   ansible.builtin.user:
     name: pi
     groups: admins
-    append: yes
+    append: true
     password: "{{ pi_pass | password_hash('sha512') }}"
-  no_log: True
+  no_log: true
   tags:
     - user_mgmnt
 

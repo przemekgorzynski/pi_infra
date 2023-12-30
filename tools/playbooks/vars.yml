@@ -1,3 +1,4 @@
+---
 # DO NOT CHANGE ORDER OF EXISTING DIRECTORIES LISTS
 # IT IS USED IN CODE - {{ data_directories[1] }}
 domain: gorillabay.org
@@ -9,23 +10,23 @@ traefik_log_dir: /var/log/traefik
 
 ################################
 data_directories:
-- /samba_shares/tooling/nextcloud
-- /samba_shares/tooling/nextcloud/db
-- /samba_shares/tooling/nextcloud/data
-- /samba_shares/tooling/prometheus
-- /samba_shares/tooling/prometheus/data
-- /samba_shares/tooling/grafana
-- /samba_shares/tooling/grafana/data
-- /samba_shares/tooling/plex
-- /samba_shares/tooling/plex/config
-- /samba_shares/tooling/jellyfin
-- /samba_shares/tooling/jellyfin/config
+  - /samba_shares/tooling/nextcloud
+  - /samba_shares/tooling/nextcloud/db
+  - /samba_shares/tooling/nextcloud/data
+  - /samba_shares/tooling/prometheus
+  - /samba_shares/tooling/prometheus/data
+  - /samba_shares/tooling/grafana
+  - /samba_shares/tooling/grafana/data
+  - /samba_shares/tooling/plex
+  - /samba_shares/tooling/plex/config
+  - /samba_shares/tooling/jellyfin
+  - /samba_shares/tooling/jellyfin/config
 
-############################################## 
+##############################################
 monitoring_directories:
-- monitoring/prometheus_node_exporter
-- monitoring/prometheus_grafana
-- monitoring/prometheus_grafana/prometheus_config
+  - monitoring/prometheus_node_exporter
+  - monitoring/prometheus_grafana
+  - monitoring/prometheus_grafana/prometheus_config
 prometheus_node_exporter_image: quay.io/prometheus/node-exporter:latest
 prometheus_node_exporter_container_name: node_exporter
 prometheus_node_exporter_host_port: 9100
@@ -62,37 +63,14 @@ webpage_host_port: 8082
 webpage_container_port: 80
 
 ##############################################
-plex_directory: plex
-
-plex_image: lscr.io/linuxserver/plex:1.32.7
-plex_container_name: plex
-plex_claim: claim-Jmvy2YZRqoWaqDZduyzu
-
-plex_ports:
-- 32400:32400/tcp
-- 32400:32400/udp
-- 3005:3005/tcp
-- 8324:8324/tcp
-- 32469:32469/tcp
-- 1900:1900/udp
-- 32410:32410/udp
-- 32412:32412/udp
-- 32413:32413/udp
-- 32414:32414/udp
-
-plex_source_dirs:
-- /samba_shares/filmy
-- /samba_shares_backup/new
-
-##############################################
 jellyfin_directory: jellyfin
 
 jellyfin_image: lscr.io/linuxserver/jellyfin:latest
 jellyfin_container_name: jellyfin
 
 jellyfin_ports:
-- 8096:8096
+  - 8096:8096
 
 jellyfin_source_dirs:
-- /samba_shares/filmy
-- /samba_shares_backup/new
+  - /samba_shares/filmy
+  - /samba_shares_backup/new

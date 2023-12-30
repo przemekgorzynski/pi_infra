@@ -1,4 +1,5 @@
-#COPY THIS FILE TO YOUR MACHINE /ETC/TRAEFIK DIRECTORY
+---
+# COPY THIS FILE TO YOUR MACHINE /ETC/TRAEFIK DIRECTORY
 
 global:
   checkNewVersion: true
@@ -40,9 +41,9 @@ certificatesResolvers:
       storage: /letsencrypt/acme.json
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       dnschallenge:
-       provider: dynu
+        provider: dynu
   production:
-     acme:
+    acme:
       email: pszemazzz@proton.me
       storage: /letsencrypt/acme.json
       caServer: "https://acme-v02.api.letsencrypt.org/directory"

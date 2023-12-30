@@ -1,22 +1,22 @@
 ---
 - name: Samba config
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   user: przemek
-  become: yes
+  become: true
   become_user: root
-  
+
   vars_files:
-  -  ../../vault.yml
-  
+    - ../../vault.yml
+
   pre_tasks:
-  - name: check connectivity
-    ping:
+    - name: check connectivity
+      ping: samba
 
   tasks:
-  - import_role:
-      name: samba_config
-      tasks_from: main.yml
-  - import_role:
-      name: reboot
-      tasks_from: main.yml
+    - import_role:
+        name: samba_config
+        tasks_from: main.yml
+    - import_role:
+        name: reboot
+        tasks_from: main.yml

@@ -44,7 +44,7 @@ grafana_container_port: 3000
 
 ##############################################
 nextcloud_directory: nextcloud
-nextcloud_image_tag: 27.1.3
+nextcloud_image_tag: 27.1.5
 
 nextcloud_db_image: mariadb:10.6
 nextcloud_db_container_name: nextcloud_db
@@ -65,7 +65,7 @@ webpage_container_port: 80
 ##############################################
 jellyfin_directory: jellyfin
 
-jellyfin_image: lscr.io/linuxserver/jellyfin:latest
+jellyfin_image: lscr.io/linuxserver/jellyfin:10.8.13
 jellyfin_container_name: jellyfin
 
 jellyfin_ports:

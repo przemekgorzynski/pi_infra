@@ -9,8 +9,7 @@
     - ../../vault.yml
 
   pre_tasks:
-    - name: check connectivity
-      ping: samba
+    - action: ping
 
   tasks:
     - import_role:

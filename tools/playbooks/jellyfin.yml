@@ -17,19 +17,19 @@
       apt:
         name: "*"
         state: latest
-        update_cache: yes
-        autoremove: yes
-    - name: Make tooling direcotry
+        update_cache: true
+        autoremove: true
+    - name: Make tooling directory
       file:
         state: directory
-        path: "{{ tooling_direcotry }}"
+        path: "{{ tooling_directory }}"
         owner: root
         group: root
-        mode: '0750'
+        mode: '0770'
     - name: Make jellyfin directory
       file:
         state: directory
-        path: "{{ tooling_direcotry }}/{{ jellyfin_directory }}"
+        path: "{{ tooling_directory }}/{{ jellyfin_directory }}"
         owner: root
         group: root
         mode: '0750'
@@ -39,14 +39,14 @@
     - name: Copy jellyfin docker-compose file
       template:
         src: ../templates/jellyfin/jellyfin.j2
-        dest: "{{ tooling_direcotry }}/{{ jellyfin_directory }}/docker-compose.yml"
+        dest: "{{ tooling_directory }}/{{ jellyfin_directory }}/docker-compose.yml"
         owner: root
         group: root
         mode: '0750'
     - name: Start jellyfin container
       ansible.builtin.shell:
         cmd: docker-compose up -d
-        chdir: "{{ tooling_direcotry }}/{{ jellyfin_directory }}"
+        chdir: "{{ tooling_directory }}/{{ jellyfin_directory }}"
     - name: Get {{ jellyfin_container_name }} container info
       docker_container_info:
         name: "{{ jellyfin_container_name }}"

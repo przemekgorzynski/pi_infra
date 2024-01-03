@@ -4,7 +4,7 @@
 domain: gorillabay.org
 docker_network: tooling
 traefik_container_name: traefik
-tooling_direcotry: /tooling
+tooling_directory: /tooling
 traefik_directory: traefik
 traefik_log_dir: /var/log/traefik
 
@@ -73,4 +73,5 @@ jellyfin_ports:
 
 jellyfin_source_dirs:
   - /samba_shares/filmy
+  - /samba_shares/inne
   - /samba_shares_backup/new

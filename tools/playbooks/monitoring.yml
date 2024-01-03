@@ -10,12 +10,10 @@
     - vars.yml
 
   pre_tasks:
-    - name: check connectivity
-      ping: samba
+    - ping:
 
   tasks:
-    - name: check connectivity
-      ping: samba
+    - ping:
     - name: Update system
       apt:
         name: "*"

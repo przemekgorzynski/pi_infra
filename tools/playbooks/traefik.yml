@@ -11,8 +11,7 @@
     - vars.yml
 
   pre_tasks:
-    - name: check connectivity
-      ping: samba
+    - ping:
 
   tasks:
     - name: Update system

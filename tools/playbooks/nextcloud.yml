@@ -8,14 +8,13 @@
 
   vars_files:
     - vars.yml
+    - ../../vault.yml
 
   pre_tasks:
-    - name: check connectivity
-      ping: samba
+    - ping:
 
   tasks:
-    - name: check connectivity
-      ping: samba
+    - ping:
     - name: Update system
       apt:
         name: "*"
@@ -29,18 +28,27 @@
         owner: root
         group: root
         mode: '0770'
-    - name: Make nextcloud directories
+    - name: Make nextcloud DATA directories
       file:
         state: directory
         path: "{{ item }}"
         owner: www-data
         group: www-data
-        mode: '2770'  #guid
+        mode: '2775'  #guid
       with_items:
         - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
         - "{{ data_directories[0] }}"
-        - "{{ data_directories[1] }}"
         - "{{ data_directories[2] }}"
+    - name: Make nextcloud DB directories
+      file:
+        state: directory
+        path: "{{ item }}"
+        owner: 999
+        group: spi
+        mode: '2775'  #guid
+      with_items:
+        - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+        - "{{ data_directories[1] }}"
     - name: Create docker network {{ docker_network }}
       docker_network:
         name: "{{ docker_network }}"
@@ -84,6 +92,6 @@
       ansible.builtin.blockinfile:
         path: "{{ data_directories[2] }}/config/config.php"
         backup: true
-        insertafter: 0 => '192.168.0.61:4000',
+        insertafter: 0 => '10.0.0.10:4000',
         block: |
           1 => 'nextcloud.{{ domain }}',

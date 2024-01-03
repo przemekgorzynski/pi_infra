@@ -6,9 +6,31 @@ echo "########### `date +"%d-%m-%Y"` ################" >> {{ samba_rsync_logfile
 if grep -qs '{{ samba_shares_root_dir }} ' /proc/mounts; then
     if grep -qs '{{ backup_samba_shares_root_dir }} ' /proc/mounts; then
         
-        echo "`date +"%T"` rsync started" >> {{ samba_rsync_logfile }}
+        echo "`date +"%T"` backup started" >> {{ samba_rsync_logfile }}
         rsync  -az --delete --compress --exclude 'tooling' {{ samba_shares_root_dir }}/ {{ backup_samba_shares_root_dir }}/samba_shares_sync
-        echo "`date +"%T"` rsync finished" >> {{ samba_rsync_logfile }}
+        echo "`date +"%T"` rsync: OK" >> {{ samba_rsync_logfile }}
+
+        tar -czf grafana.tar.gz {{ samba_shares_root_dir }}/tooling/grafana
+        mv {{ samba_shares_root_dir }}/tooling/grafana.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-grafana.tar.gz
+        echo "`date +"%T"` gzip-tooling-grafana: OK" >> {{ samba_rsync_logfile }}
+
+        tar -czf jellyfin.tar.gz {{ samba_shares_root_dir }}/tooling/jellyfin
+        mv {{ samba_shares_root_dir }}/tooling/jellyfin.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-jellyfin.tar.gz
+        echo "`date +"%T"` gzip-tooling-jellyfin: OK" >> {{ samba_rsync_logfile }}
+
+        tar -czf jenkins.tar.gz {{ samba_shares_root_dir }}/tooling/jenkins
+        mv {{ samba_shares_root_dir }}/tooling/jenkins.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-jenkins.tar.gz
+        echo "`date +"%T"` gzip-tooling-jenkins: OK" >> {{ samba_rsync_logfile }}
+
+        tar -czf nextcloud.tar.gz {{ samba_shares_root_dir }}/tooling/nextcloud
+        mv {{ samba_shares_root_dir }}/tooling/nextcloud.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-nextcloud.tar.gz
+        echo "`date +"%T"` gzip-tooling-nextcloud: OK" >> {{ samba_rsync_logfile }}
+
+        tar -czf prometheus.tar.gz {{ samba_shares_root_dir }}/tooling/prometheus
+        mv {{ samba_shares_root_dir }}/tooling/prometheus.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-prometheus.tar.gz
+        echo "`date +"%T"` gzip-tooling-prometheus: OK" >> {{ samba_rsync_logfile }}
+
+        echo "`date +"%T"` backup finished" >> {{ samba_rsync_logfile }}
     else
     echo "{{ backup_samba_shares_root_dir }} not mounted." >> {{ samba_rsync_logfile }}
     fi

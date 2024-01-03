@@ -11,10 +11,9 @@
     - ../../vault.yml
 
   pre_tasks:
-    - ping:
+    - action: ping
 
   tasks:
-    - ping:
     - name: Update system
       apt:
         name: "*"
@@ -43,11 +42,10 @@
       file:
         state: directory
         path: "{{ item }}"
-        owner: 999
+        owner: '999'
         group: spi
         mode: '2775'  #guid
       with_items:
-        - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
         - "{{ data_directories[1] }}"
     - name: Create docker network {{ docker_network }}
       docker_network:
@@ -89,9 +87,10 @@
           Error: {{ result.container['State']['Error'] }}
       when: result.exists
     - name: Update config.php file - add trusted domain
-      ansible.builtin.blockinfile:
-        path: "{{ data_directories[2] }}/config/config.php"
-        backup: true
-        insertafter: 0 => '10.0.0.10:4000',
-        block: |
+      debug:
+        msg: |
+          Ensure following entries are in {{ data_directories[2] }}/config/config.php
+          0 => '10.0.0.10:4000',
           1 => 'nextcloud.{{ domain }}',
+      tags:
+        - message

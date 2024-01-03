@@ -10,7 +10,7 @@
     - vars.yml
 
   pre_tasks:
-    - ping:
+    - action: ping
 
   tasks:
     - name: Update system

@@ -10,10 +10,9 @@
     - vars.yml
 
   pre_tasks:
-    - ping:
+    - action: ping
 
   tasks:
-    - ping:
     - name: Update system
       apt:
         name: "*"

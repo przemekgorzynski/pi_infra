@@ -1,4 +1,4 @@
-# Local samba server builr on raspbery pi.
+# Local samba server built on raspbery pi.
 [![YAMLLINT](https://github.com/przemekgorzynski/pi_infra/actions/workflows/yamllint.yml/badge.svg)](https://github.com/przemekgorzynski/pi_infra/actions/workflows/yamllint.yml)
 
 ![setup](./docs/image.jpg)

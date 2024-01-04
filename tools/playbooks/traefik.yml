@@ -18,8 +18,8 @@
       apt:
         name: "*"
         state: latest
-        update_cache: yes
-        autoremove: yes
+        update_cache: true
+        autoremove: true
     - name: Create traefik log file
       file:
         state: file
@@ -27,17 +27,17 @@
         owner: root
         group: root
         mode: '0740'
-    - name: Make tooling direcotry
+    - name: Make tooling directory
       file:
         state: directory
-        path: "{{ tooling_direcotry }}"
+        path: "{{ tooling_directory }}"
         owner: root
         group: root
-        mode: '0750'
+        mode: '0770'
     - name: Make traefik directories
       file:
         state: directory
-        path: "{{ tooling_direcotry }}/{{ traefik_directory }}"
+        path: "{{ tooling_directory }}/{{ traefik_directory }}"
         owner: root
         group: root
         mode: '0644'
@@ -58,14 +58,14 @@
     - name: Copy traefik docker-compose file
       template:
         src: ../templates/traefik/traefik.j2
-        dest: "{{ tooling_direcotry }}/{{ traefik_directory }}/docker-compose.yml"
+        dest: "{{ tooling_directory }}/{{ traefik_directory }}/docker-compose.yml"
         owner: root
         group: root
         mode: '0660'
     - name: Start traefik
       ansible.builtin.shell:
         cmd: docker-compose up -d
-        chdir: "{{ tooling_direcotry }}/{{ traefik_directory }}"
+        chdir: "{{ tooling_directory }}/{{ traefik_directory }}"
     - name: Get {{ traefik_container_name }} container info
       docker_container_info:
         name: "{{ traefik_container_name }}"

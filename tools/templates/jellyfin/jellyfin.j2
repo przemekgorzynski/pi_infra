@@ -20,11 +20,16 @@ services:
     volumes:
       - {{ data_directories[10] }}:/config
       - {{ jellyfin_source_dirs[0] }}:/media
-      - {{ jellyfin_source_dirs[1] }}:/media_priv
+      - {{ jellyfin_source_dirs[1] }}:/inne_multimedia
+      - {{ jellyfin_source_dirs[2] }}:/media_priv
+      - /dev/shm:/config/data/transcodes
     devices:
       - /dev/video10:/dev/video10
       - /dev/video11:/dev/video11
       - /dev/video12:/dev/video12
+      - /dev/dri:/dev/dri
+      - /dev/vchiq:/dev/vchiq
+      - /dev/vcsm-cma:/dev/vcsm-cma
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

@@ -18,12 +18,12 @@
       apt:
         name: "*"
         state: latest
-        update_cache: yes
-        autoremove: yes
-    - name: Make tooling direcotry
+        update_cache: true
+        autoremove: true
+    - name: Make tooling directory
       file:
         state: directory
-        path: "{{ tooling_direcotry }}"
+        path: "{{ tooling_directory }}"
         owner: root
         group: root
         mode: '0770'
@@ -33,9 +33,9 @@
         path: "{{ item }}"
         owner: www-data
         group: www-data
-        mode: '2775'  #guid
+        mode: '2775'  # guid
       with_items:
-        - "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+        - "{{ tooling_directory }}/{{ nextcloud_directory }}"
         - "{{ data_directories[0] }}"
         - "{{ data_directories[2] }}"
     - name: Make nextcloud DB directories
@@ -44,7 +44,7 @@
         path: "{{ item }}"
         owner: '999'
         group: spi
-        mode: '2775'  #guid
+        mode: '2775'  # guid
       with_items:
         - "{{ data_directories[1] }}"
     - name: Create docker network {{ docker_network }}
@@ -66,14 +66,14 @@
     - name: Copy nextcloud docker-compose file
       template:
         src: ../templates/nextcloud/nextcloud.j2
-        dest: "{{ tooling_direcotry }}/{{ nextcloud_directory }}/docker-compose.yml"
+        dest: "{{ tooling_directory }}/{{ nextcloud_directory }}/docker-compose.yml"
         owner: root
         group: root
         mode: '0750'
     - name: Start Nextcloud
       ansible.builtin.shell:
         cmd: docker-compose up -d
-        chdir: "{{ tooling_direcotry }}/{{ nextcloud_directory }}"
+        chdir: "{{ tooling_directory }}/{{ nextcloud_directory }}"
     - name: Get {{ nextcloud_app_container_name }} container info
       docker_container_info:
         name: "{{ nextcloud_app_container_name }}"

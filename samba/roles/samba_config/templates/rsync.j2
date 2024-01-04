@@ -10,6 +10,8 @@ if grep -qs '{{ samba_shares_root_dir }} ' /proc/mounts; then
         rsync  -az --delete --compress --exclude 'tooling' {{ samba_shares_root_dir }}/ {{ backup_samba_shares_root_dir }}/samba_shares_sync
         echo "`date +"%T"` rsync: OK" >> {{ samba_rsync_logfile }}
 
+        cd {{ samba_shares_root_dir }}/tooling
+
         tar -czf grafana.tar.gz {{ samba_shares_root_dir }}/tooling/grafana
         mv {{ samba_shares_root_dir }}/tooling/grafana.tar.gz  {{ backup_samba_shares_root_dir }}/samba_shares_sync/tooling-grafana.tar.gz
         echo "`date +"%T"` gzip-tooling-grafana: OK" >> {{ samba_rsync_logfile }}
@@ -38,3 +40,6 @@ else
     echo "{{ samba_shares_root_dir }} not mounted." >> {{ samba_rsync_logfile }}
 fi
 echo "#######################################" >> {{ samba_rsync_logfile }}
+
+
+# ADD -C / to tar command

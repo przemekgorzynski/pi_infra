@@ -27,9 +27,6 @@ services:
       - /dev/video10:/dev/video10
       - /dev/video11:/dev/video11
       - /dev/video12:/dev/video12
-      - /dev/dri:/dev/dri
-      - /dev/vchiq:/dev/vchiq
-      - /dev/vcsm-cma:/dev/vcsm-cma
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

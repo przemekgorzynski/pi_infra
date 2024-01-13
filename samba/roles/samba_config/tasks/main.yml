@@ -71,7 +71,7 @@
   file:
     state: directory
     path: "{{ samba_shares_root_dir }}/{{ item }}"
-    owner: www-data
+    owner: przemek
     group: www-data
     mode: '2770'
   with_items: "{{ samba_shares }}"
@@ -82,7 +82,7 @@
   file:
     state: directory
     path: "{{ backup_samba_shares_root_dir }}/{{ item }}"
-    owner: www-data
+    owner: przemek
     group: www-data
     mode: '2770'
   with_items: "{{ samba_backup_shares }}"
@@ -154,7 +154,7 @@
   ansible.builtin.cron:
     name: "samba rsync at 6,18"
     minute: "0"
-    hour: "6,18"
+    hour: "4"
     job: "{{ samba_rsync_file_path }} 2>&1"
   with_items:
     - reboot

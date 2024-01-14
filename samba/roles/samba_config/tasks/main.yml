@@ -15,25 +15,25 @@
   tags:
     - samba_config
 
-- name: Create samba read_only user
-  ansible.builtin.user:
-    name: "{{ item.name }}"
-    password: "{{ item.password | password_hash('sha512') }}"
-    state: present
-    shell: "{{ item.shell }}"
-    groups: "{{ item.groups }}"
-    create_home: true
-  no_log: true
-  loop:
-    - {name: 'ro', password: "{{ ro_pass }}", groups: 'users', shell: '/bin/false'}
-  tags:
-    - samba_config
+# - name: Create samba read_only user
+#   ansible.builtin.user:
+#     name: "{{ item.name }}"
+#     password: "{{ item.password | password_hash('sha512') }}"
+#     state: present
+#     shell: "{{ item.shell }}"
+#     groups: "{{ item.groups }}"
+#     create_home: true
+#   no_log: true
+#   loop:
+#     - {name: 'ro', password: "{{ ro_pass }}", groups: 'users', shell: '/bin/false'}
+#   tags:
+#     - samba_config
 
 - name: Create Samba shares
   file:
     state: directory
     path: "{{ item }}"
-    owner: www-data
+    owner: przemek
     group: www-data
     mode: '0777'
   with_items:

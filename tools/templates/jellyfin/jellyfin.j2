@@ -29,7 +29,7 @@ services:
       - /dev/video12:/dev/video12
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=false"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ domain }}`)"
       - "traefik.http.routers.jellyfin.entrypoints=websecure"
       - "traefik.http.routers.jellyfin.tls.certresolver=production"

@@ -14,7 +14,7 @@ services:
       - {{ webpage_host_port }}:{{ webpage_container_port }}
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=false"
       - "traefik.http.routers.webpage.rule=Host(`{{ domain }}`)"
       - "traefik.http.routers.webpage.entrypoints=websecure"
       - "traefik.http.routers.webpage.tls.certresolver=production"
